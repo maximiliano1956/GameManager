@@ -1,0 +1,8 @@
+EXPORTS
+	DLL_Search
+	DLL_MakeAMove
+	DLL_StartNewGame
+	DLL_CleanUp
+	DLL_IsGameOver
+	DLL_GenerateMoves
+	DllMain
