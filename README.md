@@ -23,4 +23,9 @@ or running Zillions of games and loading the .zrf file.
 UciClient.exe shares the same engine with MyChess and
 is a UCI engine that doesn't need any dll.
 
+	if (pNewGame==NULL || pGenMoveAllowed==NULL || pTakeBack==NULL || pEmptySquare==NULL || pSetSquare==NULL || 
+		pMakeMove==NULL || pCheckDraw==NULL || pCheckLoss==NULL || pCheckWin==NULL || pEval==NULL || pCleanUp==NULL ||
+		pIsPosOk==NULL || pGetHashKey == NULL || pInitSearch == NULL || pGetPly == NULL ||
+		pGetSide == NULL || pInitDll == NULL)
+
 
