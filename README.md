@@ -26,9 +26,11 @@ UciClient.exe shares the same engine with MyChess and
 is a UCI engine that doesn't need any dll.
 
 Now it's possible cross-compiling having Linux as host (Ubuntu for example)
+
 There are two scripts:
 
 GameManager/CrossCompilingDll.sh create GameManager/GameManager/GameManager.dll and GameManager/MyChess/MyChess.dll
+
 UciClient/CrossCompiling.sh create UciClient/UciClient.exe
 
 
