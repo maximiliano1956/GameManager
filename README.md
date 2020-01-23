@@ -12,6 +12,7 @@ UciClient.exe <br />
 In the Zrf folder are the two Zillions of games project: MyChess and MyTicTacToe. <br />
 You have to copy GameManager.dll and MyChess.dll in MyChess folder <br />
 and GameManager.dll and MyTicTacToe.dll in the MyTicTacToe folder. <br />
+<br />
 You can launch MyChess or MyTicTacToe clicking on the .zrf files <br />
 or running Zillions of games and loading the .zrf file. <br />
 
