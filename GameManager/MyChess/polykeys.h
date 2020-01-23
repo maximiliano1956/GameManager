@@ -2,7 +2,7 @@
 #define POLYKEYS_H
 
 
-#ifdef _MSC_VER
+#if definde(_MSC_VER)
 #  define U64_POLY(u) (u##ui64)
 #else
 #  define U64_POLY(u) (u##ULL)
