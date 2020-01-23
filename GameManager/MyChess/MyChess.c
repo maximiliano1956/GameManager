@@ -256,10 +256,10 @@ int MakeMove(CompMove *move)
 }
 
 
-// Check partita finita in parit‡
+// Check partita finita in parit√†
 //
 // OUTPUT:	0		non finita in parita'
-//			1		finita in parit‡
+//			1		finita in parit√†
 
 
 int CheckDraw(void)
@@ -605,7 +605,7 @@ char *GetMoveStr(CompMove *move)
 	assert(PieceValid(piece_from));
 	assert(PieceValid(piece_to));
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	sprintf_s(MoveString,6,"%c%c%c%c",FileChar[ff],RankChar[fr],FileChar[tf],RankChar[tr]);		// Crea la stringa algebrica senza amcora l'eventuale carattere del pezzo promosso
 #else
 	sprintf(MoveString,"%c%c%c%c",FileChar[ff],RankChar[fr],FileChar[tf],RankChar[tr]);		// Crea la stringa algebrica senza amcora l'eventuale carattere del pezzo promosso
