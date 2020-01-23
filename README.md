@@ -22,7 +22,7 @@ is a UCI engine that doesn't need any dll. <br />
 <br />
 Update: <br />
 <br />
-Now it's possible cross-compiling having Linux as host (Ubuntu for example) <br />
+Now it's possible cross-compiling having Linux as host using mingw32 <br />
 There are two scripts: <br />
 
 GameManager/CrossCompilingDll.sh creates <br />
