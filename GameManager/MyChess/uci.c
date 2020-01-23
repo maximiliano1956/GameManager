@@ -227,7 +227,7 @@ void Uci_Loop(void) {
 			}
 
 			if (!strncmp(line,"setoption name Hash value ",26)) {		// Test comando "set option name Hash value " di lunghezza 26 caratteri)
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 //				sscanf_s(line,"%*s %*s %*s %*s %d",&MB);	// Ricava il numero di Megabytes da impostare (%*s fa' saltare la stringa quindi salta 4 stringhe (setoption,name,Hash,value) e carica il quinto campo intero nella variabile MB)
 #else
 				sscanf(line,"%*s %*s %*s %*s %d",&MB);		// Ricava il numero di Megabytes da impostare (%*s fa' saltare la stringa quindi salta 4 stringhe (setoption,name,Hash,value) e carica il quinto campo intero nella variabile MB)
@@ -252,7 +252,7 @@ void Uci_Loop(void) {
 			}
 
 			if (!strncmp(line,"setoption name SearchType value ",32)) {		// Test comando "set option name SearchType value " di lunghezza 32 caratteri)
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 				sscanf_s(line,"%*s %*s %*s %*s %s",SearchType,sizeof(SearchType));	// Tipo ricerca (%*s fa' saltare la stringa quindi salta 4 stringhe (setoption,name,Hash,value)
 #else
 				sscanf(line,"%*s %*s %*s %*s %s",SearchType);		// Tipo ricerca (%*s fa' saltare la stringa quindi salta 4 stringhe (setoption,name,Hash,value)
