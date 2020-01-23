@@ -244,12 +244,12 @@ DLL_Result FAR PASCAL DLL_Search(long lSearchTime,long lDepthLimit,long lVariety
 // Returns DLL_OK or a negative error code 
 
 // Mossa ricevuta dalla GUI.
-// Se Ë una mossa di edit e' tra parentesi (viene ustao anche pre il preset iniziale)
+// Se √® una mossa di edit e' tra parentesi (viene ustao anche pre il preset iniziale)
 
-// Se invece che una mossa Ë una casella Ë perchË dopo verr‡ chiamata la
+// Se invece che una mossa √® una casella √® perch√® dopo verr√† chiamata la
 // GenerateMoves() per sapere le mosse possibili da quella casella
-// Nel caso si tratti di un gioco di drops per cui una casella Ë indistinguibile da una mossa
-// baster‡ testare se la casella Ë occupata; se Ë occupata non e una mossa ma la comunicazione
+// Nel caso si tratti di un gioco di drops per cui una casella √® indistinguibile da una mossa
+// baster√† testare se la casella √® occupata; se √® occupata non e una mossa ma la comunicazione
 // della casella di enquiry per la GenerateMoves; se invece e' libera e' una mossa
 
 // Fprmato della mossa
@@ -440,8 +440,8 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 //
 // Returns DLL_OK or a negative error code 
 
-// Questa routine viene chiamata ad ogni alterazione della posizione per sapere se la partita Ë finita
-// e in tal caso qual'Ë l'esito (win,loose,draw)
+// Questa routine viene chiamata ad ogni alterazione della posizione per sapere se la partita √® finita
+// e in tal caso qual'√® l'esito (win,loose,draw)
 
 DLL_Result FAR PASCAL DLL_IsGameOver(long *lResult, LPSTR zcomment)
 {
@@ -467,7 +467,7 @@ DLL_Result FAR PASCAL DLL_IsGameOver(long *lResult, LPSTR zcomment)
 
 // Questa routine viene chiamata per informare Zillion su TUTTE le mosse ammesse nella posizione corrente
 // Viene chiamata fino a che non viene restituita una stringa vuota. A ogni chiamata viene restituita una mossa.
-// La prima volta della sequenza viene chiamata con moveBuffer pari a NULL ma non ho capito perchË!
+// La prima volta della sequenza viene chiamata con moveBuffer pari a NULL ma non ho capito perch√®!
 
 DLL_Result FAR PASCAL DLL_GenerateMoves(LPCSTR moveBuffer)
 {
@@ -1517,8 +1517,8 @@ DLL_Result DoMove(char *move)
 // Test se il gioco e' terminato
 //
 // OUTPUT:	lResult			LOSS_SCORE						Sconfitta
-//							DRAW_SCORE						Parit‡
-//							UNKNOWN_SCORE					La partita non Ë finita
+//							DRAW_SCORE						Parit√†
+//							UNKNOWN_SCORE					La partita non √® finita
 //							DLL_INVALID_POSITION_ERROR		Posizione errata
 
 
@@ -1707,7 +1707,7 @@ int CompareMoves(CompMove *move1,CompMove *move2) {
 
 int GetTimeMs() {
 
-#ifdef _MSC_VER
+#if	defined(_MSC_VER) || defined(__MINGW32__)
 	return GetTickCount();
 #else
 	struct timeval t;
@@ -1731,7 +1731,7 @@ int GetTimeMs() {
 
 int InputWaiting()
 {
-#ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
   fd_set readfds;
   struct timeval tv;
   FD_ZERO (&readfds);
