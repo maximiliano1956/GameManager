@@ -1,23 +1,21 @@
 #ifndef DEFS_H								// Per includerlo comunque una sola volta
 #define DEFS_H
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#include <winsock2.h>
+#include <windows.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#ifdef WIN32
-#include <io.h>
-#endif
 
-#ifdef _MSC_VER
-#include <windows.h>
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#include <io.h>
 #else
 #include <sys/time.h>
-#ifdef WIN32
-#include <winsock2.h>
 #endif
-#endif
-
 
 #include <GameManager.h>
 
@@ -224,7 +222,7 @@ enum {
   A8 = 91, B8, C8, D8, E8, F8, G8, H8 , NO_SQ, OFFBOARD
 };
 
-#ifndef WIN32 
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
 // Le 2 costanti booleane falso=0 e vero=1
 
 enum { FALSE, TRUE };
@@ -601,7 +599,6 @@ void PerftOne(int depth,char *fenLineWithDepth);
 void PerftFile(int depth);
 int ParseMove(char *ptrChar);
 int IsRepetition(void);
-int GetTimeMs();
 int GetPvLine(int depth, S_BOARD *pos);
 int EvalPosition(int RawEval);
 int EvalPositionW(int RawEval);
