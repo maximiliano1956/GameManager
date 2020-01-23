@@ -15,7 +15,7 @@ char *PrSq(int sq) {
 
 	file = FilesBrd[sq];		// Ricava colonna (0-7)
 	rank = RanksBrd[sq];		// Ricava traversa (0-7)
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	sprintf_s(SqStr,3,"%c%c",'a' + file, '1' + rank);		// Deposita in SqStr i 2 caratteri di colonna,riga e NULL (fine stringa) 
 #else
 	sprintf(SqStr,"%c%c",'a' + file, '1' + rank);			// Deposita in SqStr i 2 caratteri di colonna,riga e NULL (fine stringa) 
@@ -61,7 +61,7 @@ char *PrMove(int move) {
 			if (IsBQ(promoted))		// Ma se non e' ne Torre ne' Regina ma e' Alfiere o Regina
 				pchar = 'b';		// allora il pezzo promosso e' un Alfiere
 	}
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	sprintf_s(MvStr,6,"%c%c%c%c%c",'a' + ff, '1' + rf, 'a' + ft, '1' + rt, pchar);
 #else
 	sprintf(MvStr,"%c%c%c%c%c",'a' + ff, '1' + rf, 'a' + ft, '1' + rt, pchar);
