@@ -19,7 +19,8 @@ or running Zillions of games and loading the .zrf file. <br />
 UciClient.exe shares the same engine with MyChess and <br />
 is a UCI engine that doesn't need any dll. <br />
 <br />
-
+<br />
+Update: <br />
 Now it's possible cross-compiling having Linux as host (Ubuntu for example) <br />
 There are two scripts: <br />
 
