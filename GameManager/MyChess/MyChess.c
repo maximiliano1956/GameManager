@@ -1,5 +1,3 @@
-#include <windows.h>
-
 #include "defs.h"
 
 #define EMPTY_FEN	"8/8/8/8/8/8/8/8 w KQkq - 0 1"
