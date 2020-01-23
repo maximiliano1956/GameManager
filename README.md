@@ -29,13 +29,16 @@ Now it's possible cross-compiling having Linux as host (Ubuntu for example)
 
 There are two scripts:
 
-GameManager/CrossCompilingDll.sh create
+GameManager/CrossCompilingDll.sh creates
 
 GameManager/GameManager/GameManager.dll
 
 GameManager/MyChess/MyChess.dll
 
-UciClient/CrossCompiling.sh create UciClient/UciClient.exe
+
+UciClient/CrossCompiling.sh create
+
+UciClient/UciClient.exe
 
 
 
