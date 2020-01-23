@@ -30,6 +30,7 @@ Now it's possible cross-compiling having Linux as host (Ubuntu for example)
 There are two scripts:
 
 GameManager/CrossCompilingDll.sh create
+
 GameManager/GameManager/GameManager.dll
 GameManager/MyChess/MyChess.dll
 
