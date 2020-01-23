@@ -1,1 +1,1 @@
-wineconsole --backend=user uciclient.exe
+wineconsole --backend=user UciClient.exe
