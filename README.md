@@ -35,7 +35,7 @@ GameManager/GameManager/GameManager.dll
 
 GameManager/MyChess/MyChess.dll
 
-UciClient/CrossCompiling.sh creates
+GameManager/UciClient/CrossCompiling.sh creates
 
 UciClient/UciClient.exe
 
