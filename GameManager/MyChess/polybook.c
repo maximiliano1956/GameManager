@@ -62,7 +62,7 @@ void IniPolyBook(void) {
 
 	// Il file del book si deve chiamare "performance.bin"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 
 	if (fopen_s(&pFile,"performance.bin","rb"))				// Cerca di aprire il file
 #else
@@ -292,7 +292,7 @@ int ConvertPolyToInternalMove(int move) {
 	fr = (move >> 9) & 0x07;
 	tf = move & 0x07;
 	tr = (move >> 3) & 0x07;
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	sprintf_s(MoveString,6,"%c%c%c%c",FileChar[ff],RankChar[fr],FileChar[tf],RankChar[tr]);		// Crea la stringa algebrica senza amcora l'eventuale carattere del pezzo promosso
 #else
 	sprintf(MoveString,"%c%c%c%c",FileChar[ff],RankChar[fr],FileChar[tf],RankChar[tr]);		// Crea la stringa algebrica senza amcora l'eventuale carattere del pezzo promosso
