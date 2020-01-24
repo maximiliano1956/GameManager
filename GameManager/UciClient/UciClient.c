@@ -1,5 +1,20 @@
+#if defined(_MSC_VER) || defined(__MINGW32)
 #include <windows.h>
+#else
+#include <string.h>
+#endif
 #include <stdio.h>
+
+
+#if !defined(_MSC_VER) && !defined(__MINGW32)
+#define DLL_PROCESS_ATTACH 0
+#define LPVOID void *
+#define BOOL unsigned int
+#define DWORD unsigned int
+#define HINSTANCE int
+#undef WINAPI
+#define WINAPI
+#endif
 
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
@@ -16,11 +31,16 @@ void main(void) {
 	while (wait)
 		Sleep(1000);
 #endif
-
+	
+#if defined(_MSC_VER) || defined(__MINGW32)
 	DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
 	DllMain_MyChess(NULL,DLL_PROCESS_ATTACH,NULL);
+#else
+	DllMain_GameManager(0,DLL_PROCESS_ATTACH,NULL);
+	DllMain_MyChess(0,DLL_PROCESS_ATTACH,NULL);
+#endif
 
-	while (TRUE) {
+	while (1) {
 	
 		memset(line,0,sizeof(line));			// Azzera il buffer in input;
 
