@@ -8,5 +8,5 @@ rm -f *.o *.a *.dll
 x86_64-w64-mingw32-gcc -c -D_LIB *.c
 ar rcs libgamemanager.a *.o
 cd ../UciClient
-rm -f *.o uciclient.exe
+rm -f *.o UciClient.exe
 x86_64-w64-mingw32-gcc -L../GameManager -L../MyChess *.c -lgamemanager -lmychess -lws2_32 -o UciClient.exe
