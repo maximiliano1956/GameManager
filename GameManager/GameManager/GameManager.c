@@ -19,7 +19,7 @@ typedef struct
 	} Stack;
 
 #define VERSIONE	"3.0"
-#define STRVER		"GameManager Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
+#define STRVER		"\nGameManager Library --- from Lelli Massimo  --- Versione "VERSIONE"\n"
 
 #define EDIT		'('
 
