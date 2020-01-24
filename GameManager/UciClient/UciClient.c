@@ -1,4 +1,4 @@
-#if defined(_MSC_VER) || defined(__MINGW32)
+#if defined(_MSC_VER) || defined(__MINGW32__)
 #include <windows.h>
 #else
 #include <string.h>
@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 
-#if !defined(_MSC_VER) && !defined(__MINGW32)
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
 #define DLL_PROCESS_ATTACH 0
 #define LPVOID void *
 #define BOOL unsigned int
@@ -32,7 +32,7 @@ void main(void) {
 		Sleep(1000);
 #endif
 	
-#if defined(_MSC_VER) || defined(__MINGW32)
+#if defined(_MSC_VER) || defined(__MINGW32__)
 	DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
 	DllMain_MyChess(NULL,DLL_PROCESS_ATTACH,NULL);
 #else
