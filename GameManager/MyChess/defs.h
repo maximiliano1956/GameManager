@@ -219,11 +219,6 @@ enum {
   A8 = 91, B8, C8, D8, E8, F8, G8, H8 , NO_SQ, OFFBOARD
 };
 
-#if !defined(_MSC_VER) && !defined(__MINGW32__)
-// Le 2 costanti booleane falso=0 e vero=1
-
-enum { FALSE, TRUE };
-#endif
 
 // Maschere per l'accesso ai bit di permesso dell'arrocco
 //
