@@ -35,7 +35,7 @@ Now it's possible cross-compiling having Linux as host using mingw32 <br />
 There are two scripts: <br />
 
 GameManager/CrossCompilingDll.sh creates <br />
-GameManager/GameManager/GameManager.dll <br /><br />
+GameManager/GameManager/GameManager.dll <br />
 GameManager/MyChess/MyChess.dll <br />
 
 GameManager/UciClient/CrossCompiling.sh creates <br />
