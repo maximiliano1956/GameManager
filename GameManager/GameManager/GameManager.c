@@ -78,7 +78,11 @@ S_OPTIONS EngineOptions[1];
 HANDLE hConsole=INVALID_HANDLE_VALUE;
 FILE *fp=NULL;
 int	SiLog;
+
+#ifndef _LIB
 HMODULE hLib=NULL;
+#endif
+
 FILE *fp_parse=NULL;
 int initOk=0;
 
@@ -310,21 +314,24 @@ DLL_Result FAR PASCAL DLL_StartNewGame(LPCSTR variant)
 DLL_Result FAR PASCAL DLL_CleanUp()
 {
 	(*pCleanUp)();								// Chiusura libreria specializzata
-
+	
+#if	defined(_MSC_VER) || defined(__MINGW32__)
 	if (hConsole!=INVALID_HANDLE_VALUE)
 		{
 			FreeConsole();
 			hConsole=INVALID_HANDLE_VALUE;
 		}
-
+#endif
 	if (fp)
 	{
 		fclose(fp);
 		fp=NULL;
 	}
 
+#ifndef _LIB
 	if (hLib)
 		FreeLibrary(hLib);
+#endif
 
 	if (HashTable.pTable)
 		free(HashTable.pTable);				// Rilascia la ram allocata per la tabella hash
@@ -361,7 +368,8 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 	if (fdwReason==DLL_PROCESS_ATTACH)
 	{
 		GestConfig(INIFILENAME);
-
+		
+#if	defined(_MSC_VER) || defined(__MINGW32__)
 		if (SiLog&0x01)
 		{
 			if (AllocConsole()==0)
@@ -374,7 +382,8 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 					printf("Non riesco ad aprire la console\n");
 			}
 		}
-
+#endif
+		
 		if (SiLog&0x02)
 		{
 			fp=fopen(LOGFILENAME,"w");
@@ -402,7 +411,7 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 		esito=LoadLibGame(w_libname);
 #else
 		strcpy(file_data.cFileName,"");
-		esito=LoadLibGame(L"");
+		esito=LoadLibGame((LPCWSTR)"");
 #endif
 
 		if (esito)
@@ -509,7 +518,7 @@ DLL_Result FAR PASCAL DLL_GenerateMoves(LPCSTR moveBuffer)
 void GenVers(char *version)
 {
 	if ((SiLog&0x01)==0 || hConsole==INVALID_HANDLE_VALUE)
-		printf(version);
+		printf("%s",version);
 	
 	DoLog(version);
 }
@@ -551,10 +560,11 @@ void DoLog(char *str, ...)
 
 	if (SiLog&0x01 && hConsole!=INVALID_HANDLE_VALUE)
 	{
-		printf(stringa1);
-
+		printf("%s",stringa1);
+#if	defined(_MSC_VER) || defined(__MINGW32__)
 		if (hConsole!=INVALID_HANDLE_VALUE)
 			WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
+#endif
 	}
 
 	if (SiLog&0x02 && fp!=NULL)
