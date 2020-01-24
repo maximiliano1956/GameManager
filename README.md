@@ -15,6 +15,15 @@ and GameManager.dll and MyTicTacToe.dll in the MyTicTacToe folder. <br />
 <br />
 You can launch MyChess or MyTicTacToe clicking on the .zrf files <br />
 or running Zillions of games and loading the .zrf file. <br />
+<br />
+In Zrf/MyChess folder are also: <br />
+GameManager.ini  :  in that file you can enable logging and enable the use of a book of moves <br />
+performance.bin  :  the book file <br />
+When the book is enabled the analysis mode (UCI go infinite) doesn't work correctly <br />
+because if the move searched is marked best move in the book the search stops however <br />
+<br />
+In Zrf/MyTicTacToe folder are also: <br />
+GameManager.ini  :  in that file you can enable logging
 
 UciClient.exe shares the same engine with MyChess and <br />
 is a UCI engine that doesn't need any dll. <br />
