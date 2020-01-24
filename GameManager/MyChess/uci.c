@@ -183,6 +183,8 @@ void Uci_Loop(void) {
 	printf("option name HashTable type check default true\n");												// Dichiara opzione disponibile (nome HashTable tipo booleano default true)
 	printf("option name NullMove type check default true\n");												// Dichiara opzione disponibile (nome NullMove tipo booleano default true)
 	printf("uciok\n");
+	
+	ParsePosition("position startpos\n");				// Fa' come se avesse invece ricevto il comando "position startpos"
 
 	while (TRUE) {								// Loop infinito
 	
