@@ -2,6 +2,35 @@
 extern "C" {
 #endif
 
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
+#undef FAR
+#define FAR
+#undef PASCAL
+#define PASCAL
+#undef WINAPI
+#define WINAPI
+#define	LPSTR char *
+#define LPVOID void *
+#define BOOL unsigned int
+#define DWORD unsigned int
+#define LPCWSTR const char *
+#define LPCSTR const char *
+#define HINSTANCE int
+#define HANDLE int
+#define INVALID_HANDLE_VALUE -1
+#define DLL_PROCESS_ATTACH 0
+#define INFINITE -1
+
+typedef struct {
+	char cFileName[256+1];
+} WIN32_FIND_DATAA;
+
+// Le 2 costanti booleane falso=0 e vero=1
+
+enum { FALSE, TRUE };
+
+#endif
+
 typedef	unsigned long long	U64;			// Tipo intero senza segno a 64 bit
 
 enum {
