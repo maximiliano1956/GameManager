@@ -1,5 +1,19 @@
+#if defined(_MSC_VER) || defined(__MINGW32__)
 #include <windows.h>
+#endif
+
+#if !defined(_MSC_VER) && !defined(__MINGW32__)
+#include <stdarg.h>
+#include <string.h>
+#include <stdlib.h>
+#endif
+
+#if defined(_MSC_VER) || defined(__MINGW32__)
 #include <time.h>
+#else
+#include <sys/time.h>
+#endif
+
 #include <stdio.h>
 #include <setjmp.h>
 #include <assert.h>
