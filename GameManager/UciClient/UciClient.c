@@ -53,6 +53,10 @@ void main(void) {
 					Uci_Loop();
 					break;
 				}
+				
+				if (!strncmp(line,"quit",4))	{	// Uscita
+					break;
+				}
 			}
 	}
 }
