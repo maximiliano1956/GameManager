@@ -2,7 +2,7 @@
 
 #include "defs.h"
 
-#define STRVER          "\nMyChess     Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
+#define STRVER          "\nMyChess     Library --- by Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
 #define EMPTY_FEN	"8/8/8/8/8/8/8/8 w KQkq - 0 1"
 
