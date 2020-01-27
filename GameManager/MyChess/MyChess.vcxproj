@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="defs.h" />
     <ClInclude Include="polykeys.h" />
+    <ClInclude Include="Versione.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameManager\GameManager.vcxproj">
