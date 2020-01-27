@@ -73,7 +73,7 @@ typedef void  (*PEMPTYSQUARE)(int rank,int file);
 typedef void  (*PCLEANUP)(void);
 
 // opzionale
-ypedef void  (*PPRINTBOARD)(void);
+typedef void  (*PPRINTBOARD)(void);
 
 S_HASHTABLE HashTable;			// Struttura che permette di accedere alla hashtable
 S_SEARCHINFO info[1];			// Database ricerca
