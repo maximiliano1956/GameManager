@@ -394,13 +394,6 @@ typedef struct {
 } S_BOARD;
 
 
-// Tipi di ricerca
-
-#define	STR_ALPHABETA		"AlphaBeta"
-#define	STR_MINMAX			"MinMax"
-#define STR_NEGAMAX			"NegaMax"
-
-
 // MACROS
 
 //
@@ -559,8 +552,7 @@ void InitHashKeys(void);
 U64 GeneratePosKey(const S_BOARD *pos);
 int ParseFen(char *fen);
 void ResetBoard(S_BOARD *pos);
-void PrintBoard(const S_BOARD *pos);
-void PrintBoardUci(void);
+void PrintBoard(void);
 void UpdateListsMaterial(S_BOARD *pos);
 void InitFilesRanksBrd(void);
 int CheckBoard(S_BOARD *pos);
