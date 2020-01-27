@@ -1,6 +1,3 @@
-#define VERSIONE	"1.0"
-#define STRVER		"MyTicTacToe Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
-
 #define EMPTY		-1
 #define CROSS		0
 #define CIRCLE		1
