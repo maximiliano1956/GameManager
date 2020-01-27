@@ -5,6 +5,9 @@
 #endif
 #include <stdio.h>
 
+#include "Versione.h"
+
+#define STRVER          "\nUciClient     Uci engine --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
 #if !defined(_MSC_VER) && !defined(__MINGW32__)
 #define DLL_PROCESS_ATTACH 0
@@ -19,12 +22,22 @@
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
-void Uci_Loop(void);
+void GenVers(char *version);
+
+int SetOptions(char argc,char *argv[]);
+void ShowOptions(void);
+void ShowHelp(void);
+
+void Help(void) {
+
+	printf("Commands: uci quit vers\n\n");
+}
 
 
-void main(void) {
+void main(char argc,char *argv[]) {
 
 	char line[256];
+	int esito;
 
 #if 0
 	int wait=1;
@@ -39,6 +52,22 @@ void main(void) {
 	DllMain_GameManager(0,DLL_PROCESS_ATTACH,NULL);
 	DllMain_MyChess(0,DLL_PROCESS_ATTACH,NULL);
 #endif
+	
+	esito = SetOptions(argc,argv);
+	if (esito!=0)
+	{
+		if (esito==2)
+			GenVers(STRVER);
+		if (esito==1)
+			ShowHelp();
+		return;
+	}
+
+	GenVers(STRVER);
+
+	ShowOptions();
+
+	printf("\n\nType help for hints\n\n");
 
 	while (1) {
 	
@@ -54,9 +83,19 @@ void main(void) {
 					break;
 				}
 				
-				if (!strncmp(line,"quit",4))	{	// Uscita
-					break;
-				}
+				else if (!strncmp(line,"quit",4))	{	// Uscita
+						break;
+					}
+				
+				else if (!strncmp(line,"vers",4))	{	// Versione
+						GenVers(STRVER);
+						continue;
+					}
+				
+				else 	{	// Comando non riconosciuto
+						Help();
+						continue;
+					}
 			}
 	}
 }
