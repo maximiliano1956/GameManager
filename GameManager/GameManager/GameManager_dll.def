@@ -12,3 +12,4 @@ EXPORTS
 	SetUci
 	SetHashSize
 	SetOpt
+	GetDims
