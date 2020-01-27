@@ -21,7 +21,7 @@ int MoveListOk(S_MOVELIST *list,S_BOARD *pos) {
 
 		if (!PieceValid(pos->pieces[FROMSQ(list->moves[MoveNum].move)])) {									// Controllo che il codice del pezzo da muovere dichiarato nella mossa sia corretto
 		
-			LogBoard();
+			PrintBoard();
 			return FALSE;
 		}
 	
