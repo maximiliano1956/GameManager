@@ -112,7 +112,7 @@ int Quiescence(int alpha,int beta) {
 
 		PickNextMove(MoveNum,&list);						// Ordina le mosse in modo che la mossa di posto MoveNum sia quella di punteggio maggiore (move ordering)
 		
-		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia òa stringa della mossa nel formato Zog in moveBuffer
+		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia Ã²a stringa della mossa nel formato Zog in moveBuffer
 
 		esito = DoMove(moveBuffer);							// Esegue la mossa
 
@@ -255,7 +255,7 @@ int AlphaBeta(int alpha,int beta,int depth,int DoNull) {
 
 		PickNextMove(MoveNum,&list);						// Ordina le mosse in modo che la mossa di posto MoveNum sia quella di punteggio maggiore (move ordering)
 	
-		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia òa stringa della mossa nel formato Zog in moveBuffer
+		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia Ã²a stringa della mossa nel formato Zog in moveBuffer
 
 		esito = DoMove(moveBuffer);							// Esegue la mossa
 
@@ -356,7 +356,7 @@ void SearchPosition(void) {
 
 	(*pInitSearch)();				// Reset variabili della ricerca
 
-	if (EngineOptions->UseBook && pGetBookMove)				// Se libreria delle aperture attiva
+	if (EngineOptions->Book && pGetBookMove)				// Se libreria delle aperture attiva
 		bestMove = (*pGetBookMove)();						// Cerca la mossa nella libreria
 	
 	if (bestMove.nbmoves) {									// Se mossa non trovata in libreria esegue la ricerca
