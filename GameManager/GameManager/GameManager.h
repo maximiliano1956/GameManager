@@ -61,6 +61,13 @@ typedef enum {
     DLL_INVALID_POSITION_ERROR = -7,
     DLL_NO_MOVES = -8
 } DLL_Result;
+	
+	
+// Tipi di ricerca
+
+#define	STR_ALPHABETA	"AlphaBeta"
+#define	STR_MINMAX	"MinMax"
+#define STR_NEGAMAX	"NegaMax"
 
 
 #define	FILES		0
@@ -127,7 +134,7 @@ typedef struct
 
 // Codici delle opzioni
 
-enum { USEBOOK,SEARCHTYPE,RAWEVAL,QUIESCENCE,HASH,NULLMOVE };
+enum { BOOK,SEARCHTYPE,RAWEVAL,QUIESCENCE,HASH,NULLMOVE };
 
 #ifdef GAMEMANAGER_EXPORTS
 #define	OURLIB_API	__declspec(dllexport)
