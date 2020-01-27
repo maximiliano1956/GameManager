@@ -165,7 +165,7 @@ OURLIB_API	DLL_Result FAR PASCAL DLL_Search(long lSearchTime,long lDepthLimit,lo
 #endif
 
 OURLIB_API	int GenMoveAllowed(MList *movelist,int quiesc);
-OURLIB_API	void LogBoard(void);
+OURLIB_API	void PrintBoard(void);
 OURLIB_API	void TakeBack(void);
 OURLIB_API	void EmptySquare(int rank,int file);
 OURLIB_API	void SetSquare(int rank,int file,int player,int p);
