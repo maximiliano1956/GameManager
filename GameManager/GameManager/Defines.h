@@ -146,7 +146,7 @@ typedef struct {
 
 typedef struct {
 
-	int UseBook;						// = TRUE se si puo' utilizzare la libreria delle aperture
+	int Book;						// = TRUE se si puo' utilizzare la libreria delle aperture
 	int SearchType;						// Tipo ricerca (0 = AlphaBeta   1 = MinMax   2 = NegaMax)
 	int RawEval;						// = TRUE valutazione grezza (default = FALSE)
 	int Quiescence;						// Ricerca con quiescenza (default = TRUE)
