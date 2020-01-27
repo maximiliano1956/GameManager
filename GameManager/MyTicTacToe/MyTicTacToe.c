@@ -6,6 +6,11 @@
 
 #include "MyTicTacToe.h"
 
+#include "Versione.h"
+
+
+#define STRVER		"\nMyTicTacToe Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
+
 
 int pos[MAXUDIMS][MAXUDIMS];
 U64 PieceKeys[2][MAXUDIMS*MAXUDIMS];
@@ -82,7 +87,7 @@ int GenMoveAllowed(MList *movelist,int quiesc)
 // Log dello stato del board
 //
 
-void LogBoard(void)
+void PrintBoard(void)
 {
 	int nranks;
 	int nfiles;
@@ -292,10 +297,10 @@ void NewGame(void)
 }
 
 
-// Check partita finita in parit‡
+// Check partita finita in parit√†
 //
 // OUTPUT:	0		non finita
-//			1		finita in parit‡
+//			1		finita in parit√†
 
 
 int CheckDraw(void)
