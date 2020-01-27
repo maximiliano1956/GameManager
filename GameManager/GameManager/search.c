@@ -112,7 +112,7 @@ int Quiescence(int alpha,int beta) {
 
 		PickNextMove(MoveNum,&list);						// Ordina le mosse in modo che la mossa di posto MoveNum sia quella di punteggio maggiore (move ordering)
 		
-		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia òa stringa della mossa nel formato Zog in moveBuffer
+		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia la stringa della mossa nel formato Zog in moveBuffer
 
 		esito = DoMove(moveBuffer);							// Esegue la mossa
 
