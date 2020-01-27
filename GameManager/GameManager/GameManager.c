@@ -578,7 +578,6 @@ void DoLog(char *str, ...)
 	if (SiLog&0x01 && hConsole!=INVALID_HANDLE_VALUE)
 		WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
 #endif
-	}
 
 	if (SiLog&0x02 && fp!=NULL)
 	{
