@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="..\MyChess\defs.h" />
     <ClInclude Include="..\MyChess\polykeys.h" />
+    <ClInclude Include="..\MyChess\Versione.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\MyChess\attack.c" />
