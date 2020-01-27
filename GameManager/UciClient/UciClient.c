@@ -22,6 +22,7 @@
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
+void Uci_Loop(void);
 void GenVers(char *version);
 
 int SetOptions(char argc,char *argv[]);
