@@ -1,14 +1,26 @@
 #include "Defines.h"
+#include "Versione.h"
 
-
+#define STR_SILOG		"SiLog"
+#define OPZ_SILOG		"-"STR_SILOG"="
 
 #define STR_SEARCHTYPE		"SearchType"
-#define	STR_RAWEVAL			"RawEval"
+#define	STR_RAWEVAL		"RawEval"
 #define	STR_QUIESCENCE		"Quiescence"
-#define	STR_HASH			"Hash"
+#define	STR_HASH		"Hash"
 #define	STR_NULLMOVE		"NullMove"
-#define	STR_BOOK			"Book"
+#define	STR_BOOK		"Book"
 
+
+#define OPZ_VERS		"-v"
+#define OPZ_HELP		"-h"
+
+#define OPZ_SEARCHTYPE		"-"STR_SEARCHTYPE"="
+#define	OPZ_RAWEVAL		"-"STR_RAWEVAL"="
+#define	OPZ_QUIESCENCE		"-"STR_QUIESCENCE"="
+#define	OPZ_HASH		"-"STR_HASH"="
+#define	OPZ_NULLMOVE		"-"STR_NULLMOVE"="
+#define	OPZ_BOOK		"-"STR_BOOK"="
 
 
 typedef struct
@@ -18,7 +30,6 @@ typedef struct
 		int ndato;
 	} Stack;
 
-#define VERSIONE	"3.0"
 #define STRVER		"\nGameManager Library --- from Lelli Massimo  --- Versione "VERSIONE"\n"
 
 #define EDIT		'('
@@ -31,8 +42,13 @@ typedef struct
 #define	MAXPIECES	32
 #define	MAXDIMS		8
 
+#ifndef _LIB
 #define	LOGFILENAME	"GameManager.log"
 #define	INIFILENAME	"GameManager.ini"
+#else
+#define	LOGFILENAME	"UciClient.log"
+#define	INIFILENAME	"UciClient.ini"
+#endif
 
 void GameTerminated(long *score,char *comm);
 void DoSearch(long BeginTime,long lSearchTime, long lDepthLimit, long lVariety,Search_Status *pSearchStatus, LPSTR bestMove, LPSTR currentMove,long *plNodes, long *plScore, long *plDepth);
@@ -57,7 +73,7 @@ typedef void  (*PEMPTYSQUARE)(int rank,int file);
 typedef void  (*PCLEANUP)(void);
 
 // opzionale
-typedef void  (*PLOGBOARD)(void);
+ypedef void  (*PPRINTBOARD)(void);
 
 S_HASHTABLE HashTable;			// Struttura che permette di accedere alla hashtable
 S_SEARCHINFO info[1];			// Database ricerca
@@ -121,7 +137,7 @@ long			*Depth;
 PNEWGAME pNewGame;
 PGENMOVEALLOWED pGenMoveAllowed;
 PTAKEBACK pTakeBack;
-PLOGBOARD pLogBoard;
+PPRINTBOARD pPrintBoard;
 PEVAL pEval;
 PCHECKDRAW pCheckDraw;
 PCHECKLOSS pCheckLoss;
@@ -391,9 +407,9 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 				printf("Non riesco a creare il file di log\n");
 		}
 
-		GenVers(STRVER);
-
 #ifndef _LIB
+		GenVers(STRVER);
+		
 		pfile=FindFirstFileA("*.zrf",&file_data);
 
 		if ((pfile==INVALID_HANDLE_VALUE))
@@ -557,13 +573,10 @@ void DoLog(char *str, ...)
 				stringa1[len]='\n';
 				stringa1[len+1]='\0';
 			}
-
-	if (SiLog&0x01 && hConsole!=INVALID_HANDLE_VALUE)
-	{
-		printf("%s",stringa1);
+	
 #if	defined(_MSC_VER) || defined(__MINGW32__)
-		if (hConsole!=INVALID_HANDLE_VALUE)
-			WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
+	if (SiLog&0x01 && hConsole!=INVALID_HANDLE_VALUE)
+		WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
 #endif
 	}
 
@@ -598,7 +611,7 @@ void SetOpt(int Opz,int Value) {
 
 	switch (Opz) {
 
-	case USEBOOK:		EngineOptions->UseBook = (Value) ? TRUE : FALSE;
+	case BOOK:		EngineOptions->Book = (Value) ? TRUE : FALSE;
 						break;
 	case SEARCHTYPE:	if (Value < ALPHABETA)
 							Value = ALPHABETA;
@@ -1205,7 +1218,7 @@ void GestConfig(char *inifilename)
 	EngineOptions->Quiescence = TRUE;			// Per default ricerca con quiescenza
 	EngineOptions->Hash = TRUE;					// Per default gestione hashtable attiva
 	EngineOptions->NullMove = TRUE;				// Per default gestione NullMove attiva
-	EngineOptions->UseBook = TRUE;				// Per default gestione Libreria aperture attiva
+	EngineOptions->Book = TRUE;				// Per default gestione Libreria aperture attiva
 
 	fp=fopen(INIFILENAME,"r");
 	
@@ -1216,7 +1229,7 @@ void GestConfig(char *inifilename)
 	{
 		sscanf(bLine,"%s %d",par,&value);
 
-		if (!strcmp(par,"SiLog"))
+		if (!strcmp(par,SRT_SILOG))
 			SiLog=value;
 
 		if (!strcmp(par,STR_SEARCHTYPE))
@@ -1231,7 +1244,7 @@ void GestConfig(char *inifilename)
 		if (!strcmp(par,STR_NULLMOVE))
 			EngineOptions->NullMove = value ? TRUE:FALSE;
 		if (!strcmp(par,STR_BOOK))
-			EngineOptions->UseBook = value ? TRUE:FALSE;
+			EngineOptions->Book = value ? TRUE:FALSE;
 	}
 
 	fclose(fp);
@@ -1253,7 +1266,7 @@ int LoadLibGame(LPCWSTR LibGameName)
 
 	pNewGame=(PNEWGAME)GetProcAddress(hLib,"NewGame");
 	pGenMoveAllowed=(PGENMOVEALLOWED)GetProcAddress(hLib,"GenMoveAllowed");
-	pLogBoard=(PLOGBOARD)GetProcAddress(hLib,"LogBoard");
+	pPrintBoard=(PPRINTBOARD)GetProcAddress(hLib,"PrintBoard");
 	pTakeBack=(PTAKEBACK)GetProcAddress(hLib,"TakeBack");
 	pEmptySquare=(PEMPTYSQUARE)GetProcAddress(hLib,"EmptySquare");
 	pSetSquare=(PSETSQUARE)GetProcAddress(hLib,"SetSquare");
@@ -1283,7 +1296,7 @@ int LoadLibGame(LPCWSTR LibGameName)
 #else
 	pNewGame=(PNEWGAME)NewGame;
 	pGenMoveAllowed=(PGENMOVEALLOWED)GenMoveAllowed;
-	pLogBoard=(PLOGBOARD)LogBoard;
+	pPrintBoard=(PPRINTBOARD)PrintBoard;
 	pTakeBack=(PTAKEBACK)TakeBack;
 	pEmptySquare=(PEMPTYSQUARE)EmptySquare;
 	pSetSquare=(PSETSQUARE)SetSquare;
@@ -1547,8 +1560,8 @@ void GameTerminated(long *score,char *comm)
 	{
 		DoLog("Losing position");
 		
-		if (pLogBoard)
-			(*pLogBoard)();
+		if (pPrintBoard)
+			(*pPrintBoard)();
 
 		*score=LOSS_SCORE;
 	}
@@ -1557,8 +1570,8 @@ void GameTerminated(long *score,char *comm)
 		{
 			DoLog("Winning position");
 		
-			if (pLogBoard)
-				(*pLogBoard)();
+			if (pPrintBoard)
+				(*pPrintBoard)();
 
 			*score=WIN_SCORE;
 		}
@@ -1567,8 +1580,8 @@ void GameTerminated(long *score,char *comm)
 			{
 				DoLog("Drawing position");
 		
-				if (pLogBoard)
-					(*pLogBoard)();
+				if (pPrintBoard)
+					(*pPrintBoard)();
 
 				*score=DRAW_SCORE;
 			}
@@ -1772,4 +1785,155 @@ int InputWaiting()
       return dw <= 1 ? 0 : dw;
 	}
 #endif
+}
+
+//
+// Visualizzazione Help
+//
+
+void ShowHelp(void)
+{
+	printf("\nCommand line options:\n\n");
+
+	printf("-v\tprint version and quit\n");
+	printf("-h\tprint this help and quit\n\n");
+
+	printf("-SiLog=1\tenable console log (works if a GUI is present)\n");
+	printf("-SiLog=2\tenable file log\n");
+	printf("-SiLog=3\tenable console  (works if a GUI is present) and file log\n\n");
+
+	printf("-SearchType=AlphaBeta\tset search ALFA-BETA\n");
+	printf("-SearchType=MinMax\tset search MIN-MAX\n");
+	printf("-SearchType=NegaMax\tset search NEGA-MAX\n\n");
+
+	printf("-Hash\tenable hash-table\n");
+	printf("-NullMove\tenable null-move\n");
+	printf("-RawEval\tenable raw-eval\n");
+	printf("-Book\tenable book library (named performance.bin)\n\n\n");
+}
+
+//
+// Questa funzione gestisce le opzioni di lancio di Uciclient per settare le variabili di configurazione
+//
+// OUTPUT: 1 se opzione non riconosciuta  orichiesta stampa help ==> uscire stampando help
+// OUTPUT: 2 ==> richiesta stampa versione ==> uscire
+
+int SetOptions(char argc, char *argv[])
+{
+int ind;
+int ValOpz;
+char SearchType[128];		// Tipo ricerca
+int found;
+
+found=0;
+
+for (ind=1;ind<argc;ind++)
+        {
+        	if (!strcmp(argv[ind],OPZ_VERS))
+			return(2);
+
+        	if (!strcmp(argv[ind],OPZ_HELP))
+		{
+			ShowHelp();
+			return(3);
+		}
+
+        	if (!strncmp(argv[ind],OPZ_SILOG,strlen(OPZ_SILOG)))
+                	{
+                		sscanf(argv[ind]+strlen(OPZ_SILOG),"%d",&ValOpz);
+				if (ValOpz>=0 && ValOpz<=3)
+				{
+					SiLog = ValOpz;
+					found = 1;
+				}
+                	}
+
+        	if (!strncmp(argv[ind],OPZ_SEARCHTYPE,strlen(OPZ_SEARCHTYPE)))
+        	{
+                	sscanf(argv[ind]+strlen(OPZ_SEARCHTYPE),"%s",SearchType);
+
+			ValOpz = -1;
+
+			if (!strcmp(SearchType,STR_ALPHABETA))                                          // Decodifica tipi ricerca
+				ValOpz = ALPHABETA;
+
+			if (!strcmp(SearchType,STR_MINMAX))
+				ValOpz = MINMAX;
+
+			if (!strcmp(SearchType,STR_NEGAMAX))
+				ValOpz = NEGAMAX;
+
+			if (ValOpz!=-1)
+			{
+				SetOpt(SEARCHTYPE,ValOpz);                                              // Setta in maniera opportuna il tipo ricerca
+				found = 1;
+			}
+
+        	}
+        	if (!strncmp(argv[ind],OPZ_QUIESCENCE,strlen(OPZ_QUIESCENCE)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_QUIESCENCE),"%d",&ValOpz);
+			SetOpt(QUIESCENCE,ValOpz);
+			found = 1;
+                	}
+        	if (!strncmp(argv[ind],OPZ_HASH,strlen(OPZ_HASH)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_HASH),"%d",&ValOpz);
+			SetOpt(HASH,ValOpz);
+			found = 1;
+                	}
+        	if (!strncmp(argv[ind],OPZ_NULLMOVE,strlen(OPZ_NULLMOVE)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_NULLMOVE),"%d",&ValOpz);
+			SetOpt(NULLMOVE,ValOpz);
+			found = 1;
+                	}
+        	if (!strncmp(argv[ind],OPZ_RAWEVAL,strlen(OPZ_RAWEVAL)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_RAWEVAL),"%d",&ValOpz);
+			SetOpt(RAWEVAL,ValOpz);
+			found = 1;
+                	}
+        	if (!strncmp(argv[ind],OPZ_BOOK,strlen(OPZ_BOOK)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_BOOK),"%d",&ValOpz);
+			SetOpt(BOOK,ValOpz);
+			found = 1;
+                	}
+	}
+
+return (argc > 1 && found == 0) ? 1:0;
+}
+
+//
+// Questa funzione visualizza le opzioni configurate di Uciclient
+//
+
+void ShowOptions(void)
+{
+	char SearchType[128];
+
+	printf("\n\nOptions:\n\n");
+
+	printf(STR_SILOG"=%d\n",SiLog);
+
+	switch (EngineOptions->SearchType)
+	{
+		case ALPHABETA:	strcpy(SearchType,STR_ALPHABETA);
+				break;
+		case MINMAX:	strcpy(SearchType,STR_MINMAX);
+				break;
+		case NEGAMAX:	strcpy(SearchType,STR_NEGAMAX);
+				break;
+	}
+
+	printf(STR_SEARCHTYPE"=%s\n",SearchType);
+
+	printf(STR_QUIESCENCE"=%d\n",EngineOptions->Quiescence);
+	printf(STR_HASH"=%d\n",EngineOptions->Hash);
+	printf(STR_NULLMOVE"=%d\n",EngineOptions->NullMove);
+	printf(STR_RAWEVAL"=%d\n",EngineOptions->RawEval);
+	printf(STR_BOOK"=%d\n",EngineOptions->Book);
+
+	printf("\n\n");
 }
