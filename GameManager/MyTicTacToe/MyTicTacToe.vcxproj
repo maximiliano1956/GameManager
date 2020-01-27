@@ -183,6 +183,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyTicTacToe.h" />
+    <ClInclude Include="Versione.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameManager\GameManager.vcxproj">
