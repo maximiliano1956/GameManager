@@ -7,7 +7,7 @@
 
 #include "Versione.h"
 
-#define STRVER          "\nUciClient     Uci engine --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
+#define STRVER          "\nUciClient     Uci engine --- by Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
 #if !defined(_MSC_VER) && !defined(__MINGW32__)
 #define DLL_PROCESS_ATTACH 0
