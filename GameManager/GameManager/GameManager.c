@@ -1229,7 +1229,7 @@ void GestConfig(char *inifilename)
 	{
 		sscanf(bLine,"%s %d",par,&value);
 
-		if (!strcmp(par,SRT_SILOG))
+		if (!strcmp(par,STR_SILOG))
 			SiLog=value;
 
 		if (!strcmp(par,STR_SEARCHTYPE))
