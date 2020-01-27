@@ -30,7 +30,7 @@ typedef struct
 		int ndato;
 	} Stack;
 
-#define STRVER		"\nGameManager Library --- from Lelli Massimo  --- Versione "VERSIONE"\n"
+#define STRVER		"\nGameManager Library --- by Lelli Massimo  --- Versione "VERSIONE"\n"
 
 #define EDIT		'('
 
