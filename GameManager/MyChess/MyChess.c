@@ -1,6 +1,8 @@
-#include "MyChess.h"
+#include "Versione.h"
 
 #include "defs.h"
+
+#define STRVER          "\nMyChess     Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
 #define EMPTY_FEN	"8/8/8/8/8/8/8/8 w KQkq - 0 1"
 
@@ -23,8 +25,9 @@ BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReser
 {
 	if (fdwReason==DLL_PROCESS_ATTACH)
 	{
+#ifndef _LIB
 		GenVers(STRVER);
-
+#endif
 		AllInit();									// Inizializzazioni varie
 	}
 
@@ -46,7 +49,7 @@ void NewGame(void)
 {
 	ParseFen(EMPTY_FEN);								// Imposta scacchiera vuota
 
-	LogBoard();
+	PrintBoard();
 }
 
 
@@ -161,18 +164,6 @@ int GenMoveAllowed(MList *movelist,int quiesc)
 	return 0;
 }
 
-//
-// Log dello stato del board
-//
-
-void LogBoard(void)
-{
-	if (GetUci())
-		PrintBoardUci();
-	else
-		PrintBoard(pos);
-}
-
 
 
 //
@@ -202,7 +193,7 @@ void EmptySquare(int rank,int file)
 
 	pos->hisPly = 0;
 
-	LogBoard();
+	PrintBoard();
 }
 
 
@@ -228,7 +219,7 @@ void SetSquare(int rank,int file,int player,int p)
 
 	pos->hisPly = 0;
 
-	LogBoard();
+	PrintBoard();
 }
 
 
