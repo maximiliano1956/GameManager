@@ -344,9 +344,8 @@ void ResetBoard(S_BOARD *pos) {
 //
 // Funzione che stampa la posizione in input
 //
-// INPUT:	pos		pointer alla posizione da stampare
 
-void PrintBoard(const S_BOARD *pos) {
+void PrintBoard(void) {
 
 	int file;		// Nr. colonna
 	int rank;		// Nr. traversa
@@ -380,45 +379,3 @@ void PrintBoard(const S_BOARD *pos) {
 
 	DoLog("Poskey:%llX\n",pos->posKey);							// Stampa in esadecimale l'haskey della posizione (llX = long long hexadecimal)
 }
-
-//
-// Funzione che stampa la posizione in input
-//
-// INPUT:	pos		pointer alla posizione da stampare
-
-void PrintBoardUci() {
-
-	int file;		// Nr. colonna
-	int rank;		// Nr. traversa
-
-	printf("\nGame Board:\n\n");
-
-	for (rank = RANK_8; rank >= RANK_1; rank--) {					// Si parte dalla traversa 8 per arrivare alla fine alla traversa 1
-		printf("%d  ", rank + 1);									// Stampa numero traversa a partire da 1
-		
-		for (file = FILE_A; file <= FILE_H; file++)					// Dalla colonna A alla colonna H
-			printf("%3c",PceChar[pos->pieces[FR2SQ(file,rank)]]);	// Stampa il carattere assegnandoli 3 digit indicizzandosi col codice del pezzo nel vattore dei simboli
-
-		printf("\n");												// Alla fine della riga va' a capo
-	}
-	
-	printf("\n   ");
-
-	for (file = FILE_A; file <= FILE_H; file++)
-		printf("%3c",'a' + file);								// Alla fine stampa una riga con i nomi delle colonne ('a','b',...,'h')
-
-	printf("\n\n");
-
-	printf("side:%c\n",SideChar[pos->side]);					// Stampa la parte che deve muovere ('w' o 'b')
-
-	printf("enpas:%d\n",pos->enPas);							// Stampa la casella en-passant come decimale (che rozzo!)
-	
-	printf("castle:%c%c%c%c\n",pos->castlePerm & WKCA ? 'K' : '-',
-							   pos->castlePerm & WQCA ? 'Q' : '-',
-							   pos->castlePerm & BKCA ? 'k' : '-',
-							   pos->castlePerm & BQCA ? 'q' : '-');	// Stampa 4 caratteri per i permessi dell'arrocco ('-' se il corrsipondente permesso non c'e')	
-
-	printf("Poskey:%llX\n",pos->posKey);							// Stampa in esadecimale l'haskey della posizione (llX = long long hexadecimal)
-}
-
-
