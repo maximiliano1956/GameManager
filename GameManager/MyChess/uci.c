@@ -62,7 +62,7 @@ void ParsePosition(char *lineIn) {
 		}
 	}
 
-	LogBoard();									// Stampa la posizione impostata
+	PrintBoard();									// Stampa la posizione impostata
 }
 
 
@@ -243,7 +243,7 @@ void Uci_Loop(void) {
 
 				ValOpz = (str_true == NULL) ? FALSE : TRUE;
 
-				SetOpt(USEBOOK,ValOpz);									// Setta in maniera opportuna il permesso a utilizzare la libreria
+				SetOpt(BOOK,ValOpz);									// Setta in maniera opportuna il permesso a utilizzare la libreria
 
 				if (ValOpz)
 					printf("Set Book to true\n");
