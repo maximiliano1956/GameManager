@@ -95,6 +95,8 @@
     <ClInclude Include="..\GameManager\Defines.h" />
     <ClInclude Include="..\GameManager\GameManager.h" />
     <ClInclude Include="..\GameManager\Versione.h" />
+    <ClInclude Include="..\GameManager\Includes.h" />
+    <ClInclude Include="..\GameManager\extern.h" />  
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
