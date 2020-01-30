@@ -1,3 +1,7 @@
+#if     !defined(_MSC_VER) && !defined(__MINGW32__)
+#include <dirent.h>
+#endif
+
 #include "Defines.h"
 #include "Versione.h"
 
@@ -41,14 +45,6 @@ typedef struct
 #define	MAXPLAYERS	16
 #define	MAXPIECES	32
 #define	MAXDIMS		8
-
-#ifndef _LIB
-#define	LOGFILENAME	"GameManager.log"
-#define	INIFILENAME	"GameManager.ini"
-#else
-#define	LOGFILENAME	"UciClient.log"
-#define	INIFILENAME	"UciClient.ini"
-#endif
 
 void GameTerminated(long *score,char *comm);
 void DoSearch(long BeginTime,long lSearchTime, long lDepthLimit, long lVariety,Search_Status *pSearchStatus, LPSTR bestMove, LPSTR currentMove,long *plNodes, long *plScore, long *plDepth);
@@ -358,6 +354,37 @@ DLL_Result FAR PASCAL DLL_CleanUp()
 }
 
 
+#if	!defined(_MSC_VER) && !defined(__MINGW32__)
+void find_ext(char *extn,char *result)
+{
+        DIR           *d;
+
+        struct dirent *dir;
+
+        result[0]='\0';
+
+        d = opendir(".");
+
+        if (d)
+        {
+                while ((dir = readdir(d)) != NULL)
+                {
+                        char *dot;
+
+                        dot = strrchr(dir->d_name, '.');
+
+                        if (!dot || dot == dir->d_name)
+                                continue;
+
+                        if (!strcmp(dot + 1, extn))
+                                strcpy(result,dir->d_name);
+                }
+
+                closedir(d);
+        }
+}
+#endif
+
 //
 // FUNZIONI OPZIONALI
 //
@@ -373,17 +400,17 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 {	
 	int esito;
 	WIN32_FIND_DATAA file_data;
-
-#ifndef _LIB
 	wchar_t w_libname[128];
 	char stringa[128];
 	HANDLE pfile;
 	char *punt;
-#endif
 
 	if (fdwReason==DLL_PROCESS_ATTACH)
 	{
-		GestConfig(INIFILENAME);
+		if (UciMode)
+			GestConfig("UciClient.ini");
+		else
+			GestConfig("GameManager.ini");
 		
 #if	defined(_MSC_VER) || defined(__MINGW32__)
 		if (SiLog&0x01)
@@ -402,31 +429,43 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 		
 		if (SiLog&0x02)
 		{
-			fp=fopen(LOGFILENAME,"w");
+			if (UciMode)
+				fp=fopen("UciClient.log","w");
+			else
+				fp=fopen("GameManager.log","w");
 			if (fp==NULL)
 				printf("Non riesco a creare il file di log\n");
 		}
 
 #ifndef _LIB
 		GenVers(STRVER);
+#endif
 		
+#if	defined(_MSC_VER) || defined(__MINGW32__)
 		pfile=FindFirstFileA("*.zrf",&file_data);
 
-		if ((pfile==INVALID_HANDLE_VALUE))
-			return(TRUE);
+		if ((pfile!=INVALID_HANDLE_VALUE))
+		{
+			strcpy(stringa,file_data.cFileName);
 
-		strcpy(stringa,file_data.cFileName);
+			if ((punt=strchr(stringa,'.'))!=NULL)
+			{
+				*punt='\0';
 
-		if ((punt=strchr(stringa,'.'))==NULL)
-			return(TRUE);
-
-		*punt='\0';
-
-		MultiByteToWideChar(CP_ACP,0,stringa,-1,w_libname,sizeof(w_libname));
-
-		esito=LoadLibGame(w_libname);
+				MultiByteToWideChar(CP_ACP,0,stringa,-1,w_libname,sizeof(w_libname));
+		
+				esito=LoadLibGame(w_libname);
+			}
+			else
+				esito=LoadLibGame((LPCWSTR)"");
+		}
+		else
+		{
+			strcpy(file_data.cFileName,"");
+			esito=LoadLibGame((LPCWSTR)"");
+		}
 #else
-		strcpy(file_data.cFileName,"");
+		find_ext("zrf",file_data.cFileName);
 		esito=LoadLibGame((LPCWSTR)"");
 #endif
 
@@ -435,9 +474,10 @@ BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 
 		info->quit = FALSE;							// Init flag forzatura uscita
 
-		InitHashTable(&HashTable,64);				// Alloca 64 Mb per la ram della hashtable
+		if (ReadGameConfig(file_data.cFileName))
+			return(TRUE);
 
-		ReadGameConfig(file_data.cFileName);
+		InitHashTable(&HashTable,64);				// Alloca 64 Mb per la ram della hashtable
 
 		initOk=1;
 
@@ -575,9 +615,13 @@ void DoLog(char *str, ...)
 			}
 	
 #if	defined(_MSC_VER) || defined(__MINGW32__)
-	if (SiLog&0x01 && hConsole!=INVALID_HANDLE_VALUE)
-		WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
+	if (SiLog&0x01)
+		if (hConsole!=INVALID_HANDLE_VALUE)
+			WriteFile(hConsole,stringa1,(DWORD)strlen(stringa1),&bWritten,NULL);
 #endif
+
+	if (SiLog&0x01 && !UciMode)
+		printf("%s",stringa1);
 
 	if (SiLog&0x02 && fp!=NULL)
 	{
@@ -650,8 +694,6 @@ void SetHashSize(int HashSize) {
 //
 
 void SetUci(void) {
-
-	if (pPrintMove)
 		UciMode = TRUE;
 }
 
@@ -674,7 +716,6 @@ int GetUci(void) {
 
 int ReadGameConfig(char *filename)
 {
-#ifndef _LIB
 	int esito;
 
 	nvar=0;
@@ -691,54 +732,61 @@ int ReadGameConfig(char *filename)
 			esito=Parse(fp_parse,NULL);
 		fclose(fp_parse);
 	}
+	else
+		if (UciMode)
+		{
+			ndims[0]=2;
+			npieces[0]=7;
+			nplayers[0]=2;
+			nplayers_to_move[0]=2;
+
+			strcpy(variant[0],"Chess");
+
+			strcpy(players[0][0],"White");
+			strcpy(players[0][1],"Black");
+	
+			strcpy(order[0][0],"White");
+			strcpy(order[0][1],"Black");
+	
+			strcpy(pieces[0][0],"Dummy");
+			strcpy(pieces[0][1],"Pawn");
+			strcpy(pieces[0][2],"Knight");
+			strcpy(pieces[0][3],"Bishop");
+			strcpy(pieces[0][4],"Rook");
+			strcpy(pieces[0][5],"Queen");
+			strcpy(pieces[0][6],"King");
+
+			strcpy(namedims[0][FILES][0],"a");
+			strcpy(namedims[0][FILES][1],"b");
+			strcpy(namedims[0][FILES][2],"c");
+			strcpy(namedims[0][FILES][3],"d");
+			strcpy(namedims[0][FILES][4],"e");
+			strcpy(namedims[0][FILES][5],"f");
+			strcpy(namedims[0][FILES][6],"g");
+			strcpy(namedims[0][FILES][7],"h");
+
+			strcpy(namedims[0][RANKS][0],"1");
+			strcpy(namedims[0][RANKS][1],"2");
+			strcpy(namedims[0][RANKS][2],"3");
+			strcpy(namedims[0][RANKS][3],"4");
+			strcpy(namedims[0][RANKS][4],"5");
+			strcpy(namedims[0][RANKS][5],"6");
+			strcpy(namedims[0][RANKS][6],"7");
+			strcpy(namedims[0][RANKS][7],"8");
+
+			dims[0][FILES]=8;
+			dims[0][RANKS]=8;
+
+			nvar=0;
+			numvar=1;
+		}
+		else
+		{
+			printf("Non riesco a leggere il file %s\n",filename);
+			return(1);
+		}
 
 	numvar=nvar+1;
-#else
-	ndims[0]=2;
-	npieces[0]=7;
-	nplayers[0]=2;
-	nplayers_to_move[0]=2;
-
-	strcpy(variant[0],"Chess");
-
-	strcpy(players[0][0],"White");
-	strcpy(players[0][1],"Black");
-	
-	strcpy(order[0][0],"White");
-	strcpy(order[0][1],"Black");
-	
-	strcpy(pieces[0][0],"Dummy");
-	strcpy(pieces[0][1],"Pawn");
-	strcpy(pieces[0][2],"Knight");
-	strcpy(pieces[0][3],"Bishop");
-	strcpy(pieces[0][4],"Rook");
-	strcpy(pieces[0][5],"Queen");
-	strcpy(pieces[0][6],"King");
-
-	strcpy(namedims[0][FILES][0],"a");
-	strcpy(namedims[0][FILES][1],"b");
-	strcpy(namedims[0][FILES][2],"c");
-	strcpy(namedims[0][FILES][3],"d");
-	strcpy(namedims[0][FILES][4],"e");
-	strcpy(namedims[0][FILES][5],"f");
-	strcpy(namedims[0][FILES][6],"g");
-	strcpy(namedims[0][FILES][7],"h");
-
-	strcpy(namedims[0][RANKS][0],"1");
-	strcpy(namedims[0][RANKS][1],"2");
-	strcpy(namedims[0][RANKS][2],"3");
-	strcpy(namedims[0][RANKS][3],"4");
-	strcpy(namedims[0][RANKS][4],"5");
-	strcpy(namedims[0][RANKS][5],"6");
-	strcpy(namedims[0][RANKS][6],"7");
-	strcpy(namedims[0][RANKS][7],"8");
-
-	dims[0][FILES]=8;
-	dims[0][RANKS]=8;
-
-	nvar=0;
-	numvar=1;
-#endif
 
 	return(0);
 }
@@ -1219,7 +1267,7 @@ void GestConfig(char *inifilename)
 	EngineOptions->NullMove = TRUE;				// Per default gestione NullMove attiva
 	EngineOptions->Book = TRUE;				// Per default gestione Libreria aperture attiva
 
-	fp=fopen(INIFILENAME,"r");
+	fp=fopen(inifilename,"r");
 	
 	if (fp==NULL)
 		return;
@@ -1311,17 +1359,6 @@ int LoadLibGame(LPCWSTR LibGameName)
 	pGetPly=(PGETPLY)GetPly;
 	pGetSide=(PGETSIDE)GetSide;
 	pInitDll=(PGETSIDE)InitDll;
-
-	pExtraDepth=(PEXTRADEPTH)ExtraDepth;
-	pMakeNullMove=(PMAKENULLMOVE)MakeNullMove;
-	pTakeNullMove=(PTAKENULLMOVE)TakeNullMove;
-	pIsDraw=(PISDRAW)IsDraw;
-	pCanDoNull=(PCANDONULL)CanDoNull;
-	pGetBookMove=(PGETBOOKMOVE)GetBookMove;
-	pSetHistory=(PSETHISTORY)SetHistory;
-	pSetKillers=(PSETKILLERS)SetKillers;
-	pPrintMove=(PPRINTMOVE)PrintMove;
-	pGetPvScore=(PGETPVSCORE)GetPvScore;
 #endif
 
 	if (pNewGame==NULL || pGenMoveAllowed==NULL || pTakeBack==NULL || pEmptySquare==NULL || pSetSquare==NULL || 
@@ -1530,6 +1567,9 @@ DLL_Result DoMove(char *move)
 	Move.nbmoves=nbmoves;
 
 	esito=(*pMakeMove)(&Move);
+	
+	if (esito == DLL_OK && SiLog && pPrintBoard)	       
+		(*pPrintBoard)();
 
 	return(esito ? DLL_NO_MOVES : DLL_OK);
 }
