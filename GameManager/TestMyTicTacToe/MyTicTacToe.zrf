@@ -1,0 +1,121 @@
+; *** Tic-Tac-Toe
+
+(version "2.0")
+
+(game
+   (title "MyTicTacToe")
+   (description "One side takes X's and the other side takes O's.  Players alternate
+      placing their marks on open spots.  The object is to get three of
+	  your marks in a row horizontally, vertically, or diagonally.  If neither
+	  side accomplishes this, it's a cat's game (a draw).")
+   (history "Tic-Tac-Toe was an old adaptation of Three Men's Morris to situations
+      where there were no available pieces.  You can draw or carve marks
+	  and they are never moved.  It is played all over the world under various
+	  names, such as `Noughts and Crosses` in England.")
+   (strategy "With perfect play, Tic-Tac-Toe is a draw.  Against less than perfect
+      opponents it's an advantage to go first, as having an extra mark on the board
+	  never hurts your position.  The center is the key square as 4 possible wins
+	  go through it.  The corners are next best as 3 wins go through each of them.  The
+	  side squares are least valuable, as only 2 wins go through them.  Try to
+	  get in positions where you can `trap` your opponent by threatening two 3-in-a-rows
+	  simultaneously with a single move.  To be a good player, you must not only know
+	  how to draw as the second player, you must also be able to takes advantage of
+	  bad play.")
+
+   (engine "GameManager.dll")
+   (option "animate drops" false)
+   (option "prevent flipping" 2)
+   (win-sound "Audio\\Congrats.wav")
+   (loss-sound "Audio\\YouLose.wav")
+   (players X O)
+   (turn-order X O)
+   (board
+        (image "images\TicTacToe\TTTbrd.bmp")
+        (grid
+            (start-rectangle 16 16 112 112) ; top-left position
+            (dimensions ;3x3
+                ("top-/middle-/bottom-" (0 112)) ; rows
+                ("left/middle/right" (112 0))) ; columns
+        )
+   )
+   (piece
+        (name man)
+		(help "Man: drops on any empty square")
+		(image X "images\TicTacToe\TTTX.bmp"
+		       O "images\TicTacToe\TTTO.bmp")
+   )
+)
+
+(variant (title "-"))  ;-----------------------------------------------------
+
+; *** 4x4 Tic-Tac-Toe
+(variant
+    (title "4x4 Tic-Tac-Toe")
+    (description "Tic-Tac-Toe adapted to a 4x4 grid.  One side takes Blue
+	  and the other side takes Red.  Players alternate dropping pieces on open
+        spots.  The object is to get four of your pieces in a row horizontally,
+        vertically, or diagonally.  If neither side accomplishes this, it's a
+        cat's game (a draw).")
+    (strategy "With perfect play, 4x4 Tic-Tac-Toe is a draw.")
+    (option "animate drops" false)
+    (drop-sound "Audio\\Phaser.wav")
+    (win-sound "Audio\\Weird.wav")
+    (loss-sound "Audio\\Weird.wav")
+    (players Blue Red)
+    (turn-order Blue Red)
+    (board
+        (image "images\TicTacToe\TTT4x4.bmp")
+        (grid
+            (start-rectangle 0 0 100 100) ; top-left position
+            (dimensions ;4x4
+                ("top-/uppermid-/lowermid-/bottom-" (0 100)) ; rows
+                ("left/midleft/midright/right" (100 0)) ; columns
+			)
+		)
+	)
+    (piece
+        (image Blue "images\TicTacToe\blueball.bmp"
+               Red "images\TicTacToe\redball.bmp")
+		(help "Man: drops on any empty square")
+        (name Ball)
+	)
+   (piece
+        (name man)
+	)
+)
+
+(variant (title "-"))  ;-----------------------------------------------------
+
+; *** 5x5 TicTacToe
+(variant
+    (title "5x5 Tic-Tac-Toe")
+    (description "Tic-Tac-Toe adapted to a 5x5 grid.  One side takes the Red
+	  side and the other takes the Blue.  Players alternate
+      placing their balls on open spots.  The object is to get four of
+	  your balls in a row horizontally, vertically, or diagonally.  If neither
+	  side accomplishes this, it's a cat's game (a draw).")
+    (strategy "The game is a draw with best play, but as the starting player, you
+        can use the tactics of regular Tic-Tac-Toe by playing in the center 3x3
+        area (playing your first move in the center is a strong opening).")
+    (option "animate drops" false)
+    (players Blue Red)
+    (turn-order Blue Red)
+    (board
+        (image "images\TicTacToe\TTT5x5.bmp")
+        (grid
+            (start-rectangle 0 0 50 50)
+            (dimensions ;5x5
+                ("5/4/3/2/1" (0 50)) ; rows
+                ("a/b/c/d/e" (50 0)) ; columns
+			)
+		)
+		
+	)
+    (piece
+		(image Blue "images\TicTacToe\bballs.bmp"
+		       Red "images\TicTacToe\rballs.bmp")
+        (name Ball)
+		(help "Ball: drops on any empty square")
+	)
+    (piece (name man))
+)
