@@ -1,16 +1,23 @@
+#if defined(_MSC_VER) || defined(__MINGW32__)
 #include <windows.h>
+#endif
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 
-#include "GameManager.h"
+#include <GameManager.h>
+
+#include <extern.h>
 
 #include "MyTicTacToe.h"
 
 #include "Versione.h"
 
 
-#define STRVER		"\nMyTicTacToe Library --- by Lelli Massimo  --- Versione "VERSIONE"\n\n"
+#define STRVER		"\nMyTicTacToe Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
+#define MB	256
 
 int pos[MAXUDIMS][MAXUDIMS];
 U64 PieceKeys[2][MAXUDIMS*MAXUDIMS];
@@ -23,17 +30,35 @@ int hisPly;
 int file_from[MAXDEPTH];
 int rank_from[MAXDEPTH];
 
-char pChar[] = { ' ', 'X', 'O' };
+char pChar[] = { '.', 'X', 'O' };
 
 
+#ifndef _LIB
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+#else
+BOOL WINAPI DllMain_MyTicTacToe(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
+#endif
 {
+#ifndef _LIB
 	if (fdwReason==DLL_PROCESS_ATTACH)
 		GenVers(STRVER);
+#endif
+
+	pExtraDepth = (PEXTRADEPTH)NULL;
+	pMakeNullMove = (PMAKENULLMOVE)NULL;
+	pTakeNullMove = (PTAKENULLMOVE)NULL;
+	pIsDraw = (PISDRAW)NULL;
+	pCanDoNull = (PCANDONULL)NULL;
+	pGetBookMove = (PGETBOOKMOVE)NULL;
+	pSetHistory = (PSETHISTORY)NULL;
+	pSetKillers = (PSETKILLERS)NULL;
+	pPrintMove = (PPRINTMOVE)NULL;
+	pGetPvScore = (PGETPVSCORE)NULL;
+
+//	SetHashSize(MB);
 
 	return(TRUE); 
 }
-
 
 
 //
@@ -281,7 +306,9 @@ void NewGame(void)
 {
 	int rank,file;
 	int nranks,nfiles;
-
+	
+	InitHashKeys();
+	
 	GetDims(RANKS,&nranks);
 	GetDims(FILES,&nfiles);
 
@@ -508,8 +535,6 @@ int Eval(int RawEval)
 
 
 int InitDll(void) {
-
-	InitHashKeys();
 
 	return TRUE;
 }
