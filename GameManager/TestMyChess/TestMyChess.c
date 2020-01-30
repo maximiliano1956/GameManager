@@ -160,7 +160,6 @@ void main(char argc, char argv[]) {
 				currentMove[0]='\0';
 				iret1 = pthread_create( &thread1, NULL, monitor, NULL);
 				DLL_Search(msecs,maxdepth,10,&stato,bestMove,currentMove,&plNodes,&plScore,&plDepth);
-//				pthread_cancel(thread1);
 				stop_t=1;
 				pthread_join( thread1, NULL);
 			}
