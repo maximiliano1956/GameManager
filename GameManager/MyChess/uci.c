@@ -165,8 +165,6 @@ void Uci_Loop(void) {
 	int	 ValOpz;								// Valore opzione
 	int  MB=0;									// Size HashTable
 	int  Quit;									// Flag uscita
-	
-	SetUci();
 
 	Quit = FALSE;
 
