@@ -39,6 +39,7 @@ typedef void	(*PTAKEBACK)(void);
 typedef int		(*PISPOSOK)(void);
 typedef U64		(*PGETHASHKEY)(void);
 typedef void	(*PINITSEARCH)(void);
+typedef int		(*PINITDLL)(void);
 typedef int		(*PGETPLY)(void);
 typedef int		(*PGETSIDE)(void);
 
