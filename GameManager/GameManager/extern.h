@@ -1,0 +1,10 @@
+extern PEXTRADEPTH pExtraDepth;
+extern PMAKENULLMOVE pMakeNullMove;
+extern PTAKENULLMOVE pTakeNullMove;
+extern PISDRAW pIsDraw;
+extern PCANDONULL pCanDoNull;
+extern PGETBOOKMOVE pGetBookMove;
+extern PSETHISTORY pSetHistory;
+extern PSETKILLERS pSetKillers;
+extern PPRINTMOVE pPrintMove;
+extern PGETPVSCORE pGetPvScore;
