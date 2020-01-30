@@ -187,6 +187,7 @@ xcopy /E /Y "$(TargetDir)$(TargetFileName)" "C:\Program Files (x86)\Zillions Dev
     <ClInclude Include="Defines.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Versione.h" />
+    <ClInclude Include="Includes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
