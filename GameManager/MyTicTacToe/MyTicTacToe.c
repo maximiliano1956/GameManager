@@ -15,7 +15,7 @@
 #include "Versione.h"
 
 
-#define STRVER		"\nMyTicTacToe Library --- from Lelli Massimo  --- Versione "VERSIONE"\n\n"
+#define STRVER		"\nMyTicTacToe Library --- by Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
 #define MB	256
 
