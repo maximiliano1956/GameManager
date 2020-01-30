@@ -46,7 +46,7 @@ void MoveAllowed(void)
 
 void *monitor(void *dummy)
 {
-	while (1 && !stop_t)
+	while (!stop_t)
 	{
 		printf("%s",currentMove);
 		sleep(1);
