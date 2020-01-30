@@ -5,23 +5,15 @@
 #endif
 #include <stdio.h>
 
+#include <Includes.h>
 #include "Versione.h"
 
 #define STRVER          "\nUciClient     Uci engine --- by Lelli Massimo  --- Versione "VERSIONE"\n\n"
 
-#if !defined(_MSC_VER) && !defined(__MINGW32__)
-#define DLL_PROCESS_ATTACH 0
-#define LPVOID void *
-#define BOOL unsigned int
-#define DWORD unsigned int
-#define HINSTANCE int
-#undef WINAPI
-#define WINAPI
-#endif
-
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
+void SetUci(void);
 void Uci_Loop(void);
 void GenVers(char *version);
 
@@ -46,13 +38,7 @@ void main(char argc,char *argv[]) {
 		Sleep(1000);
 #endif
 	
-#if defined(_MSC_VER) || defined(__MINGW32__)
-	DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
-	DllMain_MyChess(NULL,DLL_PROCESS_ATTACH,NULL);
-#else
-	DllMain_GameManager(0,DLL_PROCESS_ATTACH,NULL);
-	DllMain_MyChess(0,DLL_PROCESS_ATTACH,NULL);
-#endif
+	SetUci();
 	
 	esito = SetOptions(argc,argv);
 	if (esito!=0)
@@ -69,6 +55,14 @@ void main(char argc,char *argv[]) {
 	ShowOptions();
 
 	printf("\n\nType help for hints\n\n");
+		
+#if defined(_MSC_VER) || defined(__MINGW32__)
+	DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
+	DllMain_MyChess(NULL,DLL_PROCESS_ATTACH,NULL);
+#else
+	DllMain_GameManager(0,DLL_PROCESS_ATTACH,NULL);
+	DllMain_MyChess(0,DLL_PROCESS_ATTACH,NULL);
+#endif
 
 	while (1) {
 	
