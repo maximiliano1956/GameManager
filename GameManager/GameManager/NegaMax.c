@@ -1,4 +1,5 @@
 #include "Defines.h"
+#include "extern.h"
 
 int NegaMax(int depth) {
 
@@ -32,7 +33,7 @@ int NegaMax(int depth) {
 
 	for (MoveNum = 0; MoveNum < list.nmoves; MoveNum++) {
 
-		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia òa stringa della mossa nel formato Zog in moveBuffer
+		strcpy(moveBuffer,list.m[MoveNum].str_moves);		// Copia Ã²a stringa della mossa nel formato Zog in moveBuffer
 
 		esito = DoMove(moveBuffer);							// Esegue la mossa
 
