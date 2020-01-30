@@ -1,4 +1,5 @@
 #include "Defines.h"
+#include "extern.h"
 
 //
 // Funzione che inizializza il contenuto della hashtable
