@@ -342,40 +342,70 @@ void ResetBoard(S_BOARD *pos) {
 }
 
 //
-// Funzione che stampa la posizione in input
+// Funzione che stampa la posizione in input con printf o DoLog
 //
 
-void PrintBoard(void) {
+void PrintBoardG(int prf) {
 
 	int file;		// Nr. colonna
 	int rank;		// Nr. traversa
 
-	DoLog("\nGame Board:\n\n");
+	if (!prf)
+		DoLog("\nGame Board:\n\n");
 
 	for (rank = RANK_8; rank >= RANK_1; rank--) {					// Si parte dalla traversa 8 per arrivare alla fine alla traversa 1
-		DoLog("%d  \r", rank + 1);									// Stampa numero traversa a partire da 1
+		if (prf)
+			printf("%d  ", rank + 1);									// Stampa numero traversa a partire da 1
+		else
+			DoLog("%d  \r", rank + 1);									// Stampa numero traversa a partire da 1
 		
 		for (file = FILE_A; file <= FILE_H; file++)					// Dalla colonna A alla colonna H
-			DoLog("%3c\r",PceChar[pos->pieces[FR2SQ(file,rank)]]);	// Stampa il carattere assegnandoli 3 digit indicizzandosi col codice del pezzo nel vattore dei simboli
+			if (prf)
+				printf("%3c",PceChar[pos->pieces[FR2SQ(file,rank)]]);	// Stampa il carattere assegnandoli 3 digit indicizzandosi col codice del pezzo nel vattore dei simboli
+			else
+				DoLog("%3c\r",PceChar[pos->pieces[FR2SQ(file,rank)]]);	// Stampa il carattere assegnandoli 3 digit indicizzandosi col codice del pezzo nel vattore dei simboli
 
-		DoLog("\n");												// Alla fine della riga va' a capo
+		if (prf)
+			printf("\n");												// Alla fine della riga va' a capo
+		else
+			DoLog("\n");												// Alla fine della riga va' a capo
 	}
 	
-	DoLog("\n   ");
+	if (prf)
+		printf("\n   ");												// Alla fine della riga va' a capo
+	else
+		DoLog("\n   ");
 
 	for (file = FILE_A; file <= FILE_H; file++)
-		DoLog("%3c\r",'a' + file);									// Alla fine stampa una riga con i nomi delle colonne ('a','b',...,'h')
+		if (prf)
+			printf("%3c",'a' + file);									// Alla fine stampa una riga con i nomi delle colonne ('a','b',...,'h')
+		else
+			DoLog("%3c\r",'a' + file);									// Alla fine stampa una riga con i nomi delle colonne ('a','b',...,'h')
+	if (prf)
+		printf("\n\n");
+	else
+	{
+		DoLog("\n\n");
 
-	DoLog("\n\n");
+		DoLog("side:%c\n",SideChar[pos->side]);						// Stampa la parte che deve muovere ('w' o 'b')
 
-	DoLog("side:%c\n",SideChar[pos->side]);						// Stampa la parte che deve muovere ('w' o 'b')
-
-	DoLog("enpas:%d\n",pos->enPas);								// Stampa la casella en-passant come decimale (che rozzo!)
+		DoLog("enpas:%d\n",pos->enPas);								// Stampa la casella en-passant come decimale (che rozzo!)
 	
-	DoLog("castle:%c%c%c%c\n",pos->castlePerm & WKCA ? 'K' : '-',
-							   pos->castlePerm & WQCA ? 'Q' : '-',
-							   pos->castlePerm & BKCA ? 'k' : '-',
-							   pos->castlePerm & BQCA ? 'q' : '-');	// Stampa 4 caratteri per i permessi dell'arrocco ('-' se il corrsipondente permesso non c'e')	
+		DoLog("castle:%c%c%c%c\n",pos->castlePerm & WKCA ? 'K' : '-',
+							   	pos->castlePerm & WQCA ? 'Q' : '-',
+							   	pos->castlePerm & BKCA ? 'k' : '-',
+							   	pos->castlePerm & BQCA ? 'q' : '-');	// Stampa 4 caratteri per i permessi dell'arrocco ('-' se il corrsipondente permesso non c'e')	
 
-	DoLog("Poskey:%llX\n",pos->posKey);							// Stampa in esadecimale l'haskey della posizione (llX = long long hexadecimal)
+		DoLog("Poskey:%llX\n",pos->posKey);							// Stampa in esadecimale l'haskey della posizione (llX = long long hexadecimal)
+	}
+}
+
+
+//
+// Funzione che stampa la posizione in input per log
+//
+
+void PrintBoard(void) {
+
+	PrintBoardG(0);
 }
