@@ -18,6 +18,7 @@
 #endif
 
 #include <GameManager.h>
+#include <extern.h>
 
 #define INPUTBUFFER			( 400 * 6 )		// Lunghezza buffer di input con la GUI (6 e' la lunghezza di una stringa rappresentante una mossa ( 5 char + blank ) )
 
