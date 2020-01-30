@@ -1,5 +1,5 @@
 #include "Defines.h"
-
+#include "extern.h"
 
 //
 // Questa funzione controlla se sospendere la ricerca
@@ -439,7 +439,7 @@ void SearchPosition(void) {
 				DoLog("\n");
 			}
 
-			if (UciMode) {
+			if (UciMode && pPrintMove) {
 
 				printf("info score cp %d depth %d nodes %llu time %d ",bestScore,currentDepth,info->nodes,GetTimeMs() - info->starttime);			// Protocollo UCI (la stringa si concatena con la stampa "pv" successiva)
 
@@ -452,6 +452,6 @@ void SearchPosition(void) {
 			}
 		}
 
-		if (UciMode)
+		if (UciMode && pPrintMove)
 			printf("bestmove %s\n",(*pPrintMove)(&bestMove));
 }
