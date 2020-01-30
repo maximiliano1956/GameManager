@@ -6,10 +6,13 @@ EXPORTS
 	DLL_IsGameOver
 	DLL_GenerateMoves
 	DllMain
-	DoLog
-	GenVers
-	GetUci
-	SetUci
-	SetHashSize
-	SetOpt
-	GetDims
+	pExtraDepth
+	pMakeNullMove
+	pTakeNullMove
+	pIsDraw
+	pCanDoNull
+	pGetBookMove
+	pSetHistory
+	pSetKillers
+	pPrintMove
+	pGetPvScore
