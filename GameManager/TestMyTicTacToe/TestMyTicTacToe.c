@@ -1,64 +1,36 @@
-
 #if defined(_MSC_VER) || defined(__MINGW32__)
 #include <windows.h>
-#else
+#endif
+
 #include <string.h>
-#endif
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-#if !defined(_MSC_VER) && !defined(__MINGW32__)
-#undef FAR
-#define FAR
-#undef PASCAL
-#define PASCAL
-#undef WINAPI
-#define WINAPI
-#define LPSTR char *
-#define LPVOID void *
-#define BOOL unsigned int
-#define DWORD unsigned int
-#define LPCWSTR const char *
-#define LPCSTR const char *
-#define HINSTANCE int
-#define HANDLE int
-#define INVALID_HANDLE_VALUE -1
-#define DLL_PROCESS_ATTACH 0
-#define INFINITE -1
-#endif
+#include <pthread.h>
+#include <unistd.h>
 
-typedef enum {
-    DLL_OK = 0,
-    DLL_OK_DONT_SEND_SETUP = 1, // only supported in 1.0.2 and higher!
+#include <Includes.h>
 
-    DLL_GENERIC_ERROR = -1,
-    DLL_OUT_OF_MEMORY_ERROR = -2,
-    DLL_UNKNOWN_VARIANT_ERROR = -3,
-    DLL_UNKNOWN_PLAYER_ERROR = -4,
-    DLL_UNKNOWN_PIECE_ERROR = -5,
-    DLL_WRONG_SIDE_TO_MOVE_ERROR = -6,
-    DLL_INVALID_POSITION_ERROR = -7,
-    DLL_NO_MOVES = -8
-} DLL_Result;
+#define CIRCLE	0
+#define CROSS	1
 
-
-typedef enum {
-    kKEEPSEARCHING = 0,
-    kSTOPSOON = 1,
-    kSTOPNOW = 2
-} Search_Status;
+#define	MAN	0
+#define AUTO	1
 
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyTicTacToe(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
-DLL_Result FAR PASCAL DLL_Search(long lSearchTime,long lDepthLimit,long lVariety,Search_Status *pSearchStatus,LPSTR bestMove,LPSTR currentMove,long *plNodes,long *plScore,long *plDepth);
-DLL_Result FAR PASCAL DLL_MakeAMove(LPCSTR move);
-DLL_Result FAR PASCAL DLL_StartNewGame(LPCSTR variant);
-DLL_Result FAR PASCAL DLL_CleanUp();
-DLL_Result FAR PASCAL DLL_IsGameOver(long *lResult, LPSTR zcomment);
-DLL_Result FAR PASCAL DLL_GenerateMoves(LPCSTR moveBuffer);
+void PrintBoard();
 
 char listMoves[256][32];
 int nmoves;
+
+char currentMove[256];
+
+pthread_t thread1;
+int  iret1;
+int stop_t;
 
 void MoveAllowed(void)
 {
@@ -70,24 +42,35 @@ void MoveAllowed(void)
         do
                 DLL_GenerateMoves(moveBuffer);
         while (strlen(moveBuffer)!=0 && (strcpy(listMoves[nmoves++],moveBuffer) || 1));
+}
 
-        printf("\n");
-        for (nm = 0; nm < nmoves; nm++)
-                printf("Mossa %d = %s\n", nm, listMoves[nm]);
-        printf("\n");
+void *monitor(void *dummy)
+{
+	while (!stop_t)
+	{
+		printf("%s",currentMove);
+		sleep(1);
+	}
 }
 
 
 void main(char argc, char argv[]) {
 
 	Search_Status stato;
-	char currentMove[256];
 	char bestMove[256];
 	long plNodes;
 	long plScore;
 	long plDepth;
 	long lResult;
 	char zcomment[256];
+	int side;
+	int ngames;
+	int ng;
+	int nmossa;
+	int player[2];
+	time_t t;
+	long msecs;
+	long maxdepth;
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
         DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
@@ -97,28 +80,102 @@ void main(char argc, char argv[]) {
         DllMain_MyTicTacToe(0,DLL_PROCESS_ATTACH,NULL);
 #endif
 
-	DLL_StartNewGame("MyTicTacToe");
+   	srand((unsigned) time(&t));
 
-//	DLL_IsGameOver(&lResult,zcomment);
+	msecs=10*1000;
+	maxdepth=9;
 
-	while (1)
+	ngames = 2;
+
+	player[CIRCLE]=MAN;
+	player[CROSS]=AUTO;
+
+	stato=kKEEPSEARCHING;
+
+	for (ng=1;ng<=ngames;ng++)
 	{
-		DLL_Search(2000,10,0,&stato,bestMove,currentMove,&plNodes,&plScore,&plDepth);
-		printf("best move =%s\n",bestMove);
-
-		MoveAllowed();
-
-		if (nmoves > 0)
-			DLL_MakeAMove(listMoves[0]);
+		printf("\n\nInizio partita nr=%d\n\n\n",ng);
+		printf("Circle plays ");
+		if (player[CIRCLE]==AUTO)
+			printf("Auto\n");
 		else
-			break;
+			printf("Man\n");
+		printf("Cross plays ");
+		if (player[CROSS]==AUTO)
+			printf("Auto\n");
+		else
+			printf("Man\n");
+
+		DLL_StartNewGame("MyTicTacToe");
+
+		side = CROSS;
+		nmossa = 1;
+
+		while (1)
+		{
+			DLL_IsGameOver(&lResult,zcomment);
+			if (lResult != UNKNOWN_SCORE)
+				break;
+
+			if (player[side]==AUTO)
+			{
+				stop_t=0;
+				currentMove[0]='\0';
+				iret1 = pthread_create( &thread1, NULL, monitor, NULL);
+				DLL_Search(msecs,maxdepth,10,&stato,bestMove,currentMove,&plNodes,&plScore,&plDepth);
+				stop_t=1;
+				pthread_join( thread1, NULL);
+			}
+			else
+			{
+				MoveAllowed();
+				strcpy(bestMove,listMoves[rand()%nmoves]);
+			}
+
+			DLL_MakeAMove(bestMove);
+
+			printf("\n\n");
+
+			PrintBoard();
+
+			printf("\n");
+
+			if (side==CIRCLE)
+				printf("Circle: ");
+			else
+				printf("Cross: ");
+
+			printf("Mossa %d ",nmossa);
+			printf("- %s\n\n\n",bestMove);
+
+			if (side==CIRCLE)
+				side=CROSS;
+			else
+			{
+				side=CIRCLE;
+				nmossa++;
+			}
+		}
+
+	printf("Fine partita %d\t\t",ng);
+	printf("Numero mosse %d\n",nmossa);
+
+	if (lResult==WIN_SCORE)
+		if (side==CIRCLE)
+			printf("Circle wins!\n");
+		else
+			printf("Cross wins!\n");
+	if (lResult==LOSS_SCORE)
+		if (side==CIRCLE)
+			printf("Circle loses!\n");
+		else
+			printf("Cross loses!\n");
+	if (lResult==DRAW_SCORE)
+		printf("Draw!\n");
+
 	}
 
-
-//	DLL_Search(2000,10,0,&stato,bestMove,currentMove,&plNodes,&plScore,&plDepth);
-//	DLL_MakeAMove(bestMove);
-
-//	DLL_IsGameOver(&lResult,zcomment);
+	printf("\n\nNumero partite giocate=%d\n\n\n",ngames);
 
 	DLL_CleanUp();
 
