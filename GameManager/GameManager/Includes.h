@@ -38,7 +38,9 @@ typedef enum {
     kSTOPNOW = 2
 } Search_Status;
 
+#ifndef _MSC_VER
 DLL_Result FAR PASCAL DLL_Search(long lSearchTime,long lDepthLimit,long lVariety,Search_Status *pSearchStatus,LPSTR bestMove,LPSTR currentMove,long *plNodes,long *plScore,long *plDepth);
+#endif
 DLL_Result FAR PASCAL DLL_MakeAMove(LPCSTR move);
 DLL_Result FAR PASCAL DLL_StartNewGame(LPCSTR variant);
 DLL_Result FAR PASCAL DLL_CleanUp();
