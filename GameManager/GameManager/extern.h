@@ -8,3 +8,4 @@ extern PSETHISTORY pSetHistory;
 extern PSETKILLERS pSetKillers;
 extern PPRINTMOVE pPrintMove;
 extern PGETPVSCORE pGetPvScore;
+extern PINITDLL pInitDll;
