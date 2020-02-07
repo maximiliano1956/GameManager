@@ -44,17 +44,6 @@ BOOL WINAPI DllMain_MyTicTacToe(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 		GenVers(STRVER);
 #endif
 
-	pExtraDepth = (PEXTRADEPTH)NULL;
-	pMakeNullMove = (PMAKENULLMOVE)NULL;
-	pTakeNullMove = (PTAKENULLMOVE)NULL;
-	pIsDraw = (PISDRAW)NULL;
-	pCanDoNull = (PCANDONULL)NULL;
-	pGetBookMove = (PGETBOOKMOVE)NULL;
-	pSetHistory = (PSETHISTORY)NULL;
-	pSetKillers = (PSETKILLERS)NULL;
-	pPrintMove = (PPRINTMOVE)NULL;
-	pGetPvScore = (PGETPVSCORE)NULL;
-
 //	SetHashSize(MB);
 
 	return(TRUE); 
