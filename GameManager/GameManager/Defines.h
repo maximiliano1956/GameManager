@@ -29,21 +29,6 @@
 
 #define ISMATE (WIN_SCORE - MAXDEPTH)			// Il punteggio di matto e' sempre > ISMATE o < -ISMATE (essendo WIN_SCORE - pos->ply o LOSS_SCORE + pos->ply ed essendo pos->ply < MAXDEPTH) 
 
-typedef int		(*PCHECKDRAW)(void);
-typedef int		(*PCHECKLOSS)(void);
-typedef int		(*PCHECKWIN)(void);
-typedef int		(*PEVAL)(int RawEval);
-typedef char*	(*PGENMOVEALLOWED)(MList *movelist,int quiesc);
-typedef int		(*PMAKEMOVE)(CompMove *move);
-typedef void	(*PTAKEBACK)(void);
-typedef int		(*PISPOSOK)(void);
-typedef U64		(*PGETHASHKEY)(void);
-typedef void	(*PINITSEARCH)(void);
-typedef int		(*PINITDLL)(void);
-typedef int		(*PGETPLY)(void);
-typedef int		(*PGETSIDE)(void);
-
-
 //
 // Valori assunti dal campo flags nel record HASHENTRY della tabella hash
 //
