@@ -28,6 +28,22 @@ BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReser
 #ifndef _LIB
 		GenVers(STRVER);
 #endif
+		
+#ifdef _LIB
+
+		pExtraDepth = ExtraDepth;
+		pMakeNullMove = MakeNullMove;
+		pTakeNullMove = TakeNullMove;
+		pIsDraw = IsDraw;
+		pCanDoNull = CanDoNull;
+		pGetBookMove = GetBookMove;
+		pSetHistory = SetHistory;
+		pSetKillers = SetKillers;
+		pPrintMove = PrintMove;
+		pInitDll = InitDll;
+		pGetPvScore = GetPvScore;
+#endif
+		
 		AllInit();									// Inizializzazioni varie
 	}
 
