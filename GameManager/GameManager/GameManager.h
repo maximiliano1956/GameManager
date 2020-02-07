@@ -152,6 +152,10 @@ OURLIB_API	void TakeNullMove(void);
 OURLIB_API	int InitDll(void);
 OURLIB_API	int GetPvScore(void);
 OURLIB_API	void Uci_Loop(void);
+
+OURLIB_API	void PrintBoardG(int prf);
+	
+	
 	
 typedef int             (*PCHECKDRAW)(void);
 typedef int             (*PCHECKLOSS)(void);
