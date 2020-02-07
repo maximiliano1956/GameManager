@@ -153,6 +153,20 @@ OURLIB_API	int InitDll(void);
 OURLIB_API	int GetPvScore(void);
 OURLIB_API	void Uci_Loop(void);
 	
+typedef int             (*PCHECKDRAW)(void);
+typedef int             (*PCHECKLOSS)(void);
+typedef int             (*PCHECKWIN)(void);
+typedef int             (*PEVAL)(int RawEval);
+typedef char*   (*PGENMOVEALLOWED)(MList *movelist,int quiesc);
+typedef int             (*PMAKEMOVE)(CompMove *move);
+typedef void    (*PTAKEBACK)(void);
+typedef int             (*PISPOSOK)(void);
+typedef U64             (*PGETHASHKEY)(void);
+typedef void    (*PINITSEARCH)(void);
+typedef int             (*PINITDLL)(void);
+typedef int             (*PGETPLY)(void);
+typedef int             (*PGETSIDE)(void);	
+	
 typedef int             (*PEXTRADEPTH)(void);
 typedef void    (*PMAKENULLMOVE)(void);
 typedef void    (*PTAKENULLMOVE)(void);
