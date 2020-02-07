@@ -30,7 +30,6 @@ BOOL WINAPI DllMain_MyChess(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReser
 #endif
 		
 #ifdef _LIB
-
 		pExtraDepth = ExtraDepth;
 		pMakeNullMove = MakeNullMove;
 		pTakeNullMove = TakeNullMove;
