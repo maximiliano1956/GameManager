@@ -81,6 +81,7 @@ int GenMoveAllowed(MList *movelist,int quiesc)
 				movelist->m[nmoves].bmove[0].from.file=file;
 				movelist->m[nmoves].bmove[0].from.rank=rank;
 				movelist->m[nmoves].bmove[0].from.piece=MAN;
+				movelist->m[nmoves].bmove[0].from.flags=0;
 
 				movelist->m[nmoves].bmove[0].n_to_moves=0;
 
