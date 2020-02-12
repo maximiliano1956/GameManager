@@ -7,17 +7,20 @@
 //
 
 void CheckUp(void) {
+	if (!info->stopped)
+	{
+		if (!UciMode && (*info->status != kKEEPSEARCHING))
+			 info->stopped = TRUE;
 
-	if (UciMode) {
-		if (InputWaiting())
-			info->stopped = TRUE;											// Uscita dall'engine UCI
+	        if (info->timeset == TRUE && info->stoptime != INFINITE && GetTimeMs() > info->stoptime)	// Se e' settato un tempo per la ricerca ed e' scaduto
+                	info->stopped = TRUE;									// segnala di uscire dall'iterative deepening della ricerca
+
+		if (UciMode && (( info->nodes % 100 ) == 0) && InputWaiting())
+			info->stopped = TRUE;
+
+		if (info->stopped == TRUE)
+			DoLog("Stopped\n");
 	}
-	else
-		if (*info->status != kKEEPSEARCHING)
-			info->stopped = TRUE;											// La GUI richiede l'abort
-
-	if (info->timeset == TRUE && info->stoptime != INFINITE && GetTimeMs() > info->stoptime)	// Se e' settato un tempo per la ricerca ed e' scaduto
-		info->stopped = TRUE;												// segnala di uscire dall'iterative deepening della ricerca
 }
 
 //
@@ -79,8 +82,7 @@ int Quiescence(int alpha,int beta) {
 	
 	assert((*pIsPosOk)());									// Controllo coerenza della posizione
 
-	if (( info->nodes & 0x7FF ) == 0)						// Ogni 2048 nodi controlla di non avere superato il tempo limite
-		CheckUp();
+	CheckUp();                                              // controlla se forzare fine ricerca
 	
 	info->nodes++;											// Aggiorna il numero dei nodi visitati nella ricerca
 	*info->plNodes = (long)info->nodes;						// Per la GUI
@@ -178,8 +180,7 @@ int AlphaBeta(int alpha,int beta,int depth,int DoNull) {
 	if (depth <= 0)						// Il < e' per sicurezza
 		return Quiescence(alpha,beta);	// Se raggiunta la profondita' richiesta passa alla ricerca di quiescenza (valutazioni statiche + ricerca posizione "calma" senza mosse di cattura
 
-	if (( info->nodes & 0x7FF ) == 0)						// Ogni 2048 nodi controlla di non avere superato il tempo limite
-		CheckUp();
+	CheckUp();                                              // controlla se forzare fine ricerca
 	
 	info->nodes++;											// Aggiorna il numero dei nodi visitati nella ricerca
 	*info->plNodes = (long)info->nodes;						// Per la GUI
