@@ -12,8 +12,7 @@ int NegaMax(int depth) {
 	char moveBuffer[MAXLMOVE];
 	DLL_Result esito;
 	
-	if (( info->nodes & 0x7FF ) == 0)						// Ogni 2048 nodi controlla di non avere superato il tempo limite
-		CheckUp();
+	CheckUp();                                              // controlla se forzare fine ricerca
 	
 	info->nodes++;											// Aggiorna il numero dei nodi visitati nella ricerca
 	*info->plNodes = (long)info->nodes;						// Per la GUI
