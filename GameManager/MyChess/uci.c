@@ -149,7 +149,7 @@ void ParseGo(char *line) {
 		time -= 50;														// Per stare nel sicuro e non sforare tolgo 50 msecs. dal tempo per mossa ricavato
 	}
 
-	DLL_Search((timeset) ? time : INFINITE,Depth,0,&UCI_SearchStatus,UCI_BestMove,UCI_CurrentMove,&lNodes,&lScore,&lDepth);											// Finalmente parte nella ricerca									
+	DLL_Search((timeset) ? time : 0,Depth,0,&UCI_SearchStatus,UCI_BestMove,UCI_CurrentMove,&lNodes,&lScore,&lDepth);														// Finalmente parte nella ricerca									
 }
 
 
