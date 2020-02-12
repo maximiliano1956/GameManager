@@ -180,7 +180,7 @@ PGETPVSCORE pGetPvScore = (PGETPVSCORE)NULL;
 // internally. A separate call to MakeAMove() will follow to make the move the
 // engine returns.
 //
-// -> lSearchTime: Target search time in milliseconds
+// -> lSearchTime: Target search time in milliseconds (0 means forever)
 // -> lDepthLimit: Maximum moves deep the engine should search
 // -> lVariety: Variety setting for engine. 0 = no variety, 10 = most variety
 // -> pSearchStatus: Pointer to variable where Zillions will report search status
@@ -213,10 +213,10 @@ DLL_Result FAR PASCAL DLL_Search(long lSearchTime,long lDepthLimit,long lVariety
 	info->plDepth = plDepth;
 
 	info->timeset = TRUE;								// Gestione tempo attiva
-	info->starttime = GetTimeMs();						// Tempo fine ricerca
-	info->stoptime = (lSearchTime == INFINITE) ? INFINITE : info->starttime + lSearchTime;		// Tempo di fine ricerca
+	info->starttime = GetTimeMs();							// Tempo fine ricerca
+	info->stoptime = (lSearchTime) ? info->starttime + lSearchTime : INFINITE;	// Tempo di fine ricerca
 
-	info->depth = (lDepthLimit <= MAXDEPTH) ? lDepthLimit : MAXDEPTH;		// Setta la profondita' massima della ricerca
+	info->depth = (lDepthLimit < MAXDEPTH) ? lDepthLimit : MAXDEPTH - 1;		// Setta la profondita' massima della ricerca
 
 #ifndef _LIB
 	hnd = CreateThread(NULL,64000000,(LPTHREAD_START_ROUTINE)&SearchPosition,NULL,0,&dwThreadId);
