@@ -1,1 +1,1 @@
-#define VERSIONE        "6.0"
+#define VERSIONE        "7.0"
