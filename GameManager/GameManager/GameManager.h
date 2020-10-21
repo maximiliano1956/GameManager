@@ -93,7 +93,7 @@ typedef struct
 
 // Codici delle opzioni
 
-enum { BOOK,SEARCHTYPE,RAWEVAL,QUIESCENCE,HASH,NULLMOVE };
+enum { BOOK,SEARCHTYPE,RAWEVAL,USENNUE,QUIESCENCE,HASH,NULLMOVE };
 
 #ifdef GAMEMANAGER_EXPORTS
 #define	OURLIB_API	__declspec(dllexport)
@@ -108,6 +108,7 @@ OURLIB_API	void GetDims(int ndim,int *dim);
 OURLIB_API	void DoLog(char *str, ...);
 OURLIB_API	void GenVers(char *version);
 OURLIB_API	void SetOpt(int Opz,int Value);
+OURLIB_API	int  GetOpt(int Opz);
 OURLIB_API	void SetHashSize(int HashSize);
 OURLIB_API	void SetUci(void);
 OURLIB_API	int  GetUci(void);
