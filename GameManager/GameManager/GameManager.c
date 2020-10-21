@@ -10,6 +10,7 @@
 
 #define STR_SEARCHTYPE		"SearchType"
 #define	STR_RAWEVAL		"RawEval"
+#define	STR_USENNUE		"UseNNUE"
 #define	STR_QUIESCENCE		"Quiescence"
 #define	STR_HASH		"Hash"
 #define	STR_NULLMOVE		"NullMove"
@@ -21,6 +22,7 @@
 
 #define OPZ_SEARCHTYPE		"-"STR_SEARCHTYPE"="
 #define	OPZ_RAWEVAL		"-"STR_RAWEVAL"="
+#define	OPZ_USENNUE		"-"STR_USENNUE"="
 #define	OPZ_QUIESCENCE		"-"STR_QUIESCENCE"="
 #define	OPZ_HASH		"-"STR_HASH"="
 #define	OPZ_NULLMOVE		"-"STR_NULLMOVE"="
@@ -659,21 +661,54 @@ void SetOpt(int Opz,int Value) {
 	case BOOK:		EngineOptions->Book = (Value) ? TRUE : FALSE;
 						break;
 	case SEARCHTYPE:	if (Value < ALPHABETA)
-							Value = ALPHABETA;
-						if (Value > NEGAMAX)
-							Value = NEGAMAX;
-
-						EngineOptions->SearchType = Value;
+					Value = ALPHABETA;
+				if (Value > NEGAMAX)
+					Value = NEGAMAX;
+				EngineOptions->SearchType = Value;
 						break;
 	case RAWEVAL:		EngineOptions->RawEval = (Value) ? TRUE : FALSE;
 						break;
+	case USENNUE:		EngineOptions->UseNNUE = (Value) ? TRUE : FALSE;
+						break;	
 	case QUIESCENCE:	EngineOptions->Quiescence = (Value) ? TRUE : FALSE;
 						break;
-	case HASH:			EngineOptions->Hash = (Value) ? TRUE : FALSE;
+	case HASH:		EngineOptions->Hash = (Value) ? TRUE : FALSE;
 						break;
 	case NULLMOVE:		EngineOptions->NullMove = (Value) ? TRUE : FALSE;
 						break;
 	}
+}
+
+
+//
+// Legge una opzione
+//
+// INPUT:	Opz			codice opzione
+// OUTPUT:	     			valore opzione
+
+int GetOpt(int Opz) {
+
+int Value=0;
+
+switch (Opz) {
+
+	case BOOK:		Value=EngineOptions->Book;
+						break;
+	case SEARCHTYPE: 	Value=EngineOptions->SearchType;
+						break;
+	case RAWEVAL:		Value=EngineOptions->RawEval;
+						break;
+	case USENNUE:		Value=EngineOptions->UseNNUE;
+						break;
+	case QUIESCENCE:	Value=EngineOptions->Quiescence;
+						break;
+	case HASH:		Value=EngineOptions->Hash;
+						break;
+	case NULLMOVE:		Value=EngineOptions->NullMove;
+						break;
+	}
+
+return(Value);
 }
 
 //
@@ -840,7 +875,7 @@ void GenStrMoves(MList *movelist)
 	int file;
 	int rank;
 	char square_name[MAXNAMES];
-	char str[128];
+	char str[(MAXNAMES+1)*2];
 	char piece_name[MAXNAMES];
 	int bmoves;
 	int tomoves;
@@ -1259,16 +1294,17 @@ void GestConfig(char *inifilename)
 	char bLine[64+1];
 	char par[32];
 	int value;
-
+#ifndef _LIB
 	SiLog=0;
 
 	EngineOptions->SearchType = ALPHABETA;		// Per default ricerca tipo AlphaBeta
-	EngineOptions->RawEval = FALSE;				// Per default disattiva valutazione grezza
-	EngineOptions->Quiescence = TRUE;			// Per default ricerca con quiescenza
-	EngineOptions->Hash = TRUE;					// Per default gestione hashtable attiva
-	EngineOptions->NullMove = TRUE;				// Per default gestione NullMove attiva
-	EngineOptions->Book = TRUE;				// Per default gestione Libreria aperture attiva
-
+	EngineOptions->RawEval = FALSE;			// Per default disattiva valutazione grezza
+	EngineOptions->UseNNUE = TRUE;                  // Per default attiva la valutazione nnue
+	EngineOptions->Quiescence = TRUE;		// Per default ricerca con quiescenza
+	EngineOptions->Hash = TRUE;			// Per default gestione hashtable attiva
+	EngineOptions->NullMove = TRUE;			// Per default gestione NullMove attiva
+	EngineOptions->Book = TRUE;			// Per default gestione Libreria aperture attiva
+#endif
 	fp=fopen(inifilename,"r");
 	
 	if (fp==NULL)
@@ -1286,6 +1322,8 @@ void GestConfig(char *inifilename)
 				EngineOptions->SearchType = value;
 		if (!strcmp(par,STR_RAWEVAL))
 			EngineOptions->RawEval = value ? TRUE:FALSE;
+		if (!strcmp(par,STR_USENNUE))
+			EngineOptions->UseNNUE = value ? TRUE:FALSE;
 		if (!strcmp(par,STR_QUIESCENCE))
 			EngineOptions->Quiescence = value ? TRUE:FALSE;
 		if (!strcmp(par,STR_HASH))
@@ -1853,10 +1891,28 @@ void ShowHelp(void)
 	printf("-Book\tenable book library (named performance.bin)\n\n\n");
 }
 
+
+//
+// Questa funzione imposta le opzioni di default della macchina
+//
+void SetEngineDefaults(void)
+{
+SiLog=0;
+
+EngineOptions->SearchType = ALPHABETA;	// Per default ricerca tipo AlphaBeta
+EngineOptions->RawEval = FALSE;		// Per default disattiva valutazione grezza
+EngineOptions->UseNNUE = TRUE;		// Per default attiva la valutazione nnue
+EngineOptions->Quiescence = TRUE;	// Per default ricerca con quiescenza
+EngineOptions->Hash = TRUE;		// Per default gestione hashtable attiva
+EngineOptions->NullMove = TRUE;		// Per default gestione NullMove attiva
+EngineOptions->Book = TRUE;		// Per default gestione Libreria aperture attiva
+}
+
+
 //
 // Questa funzione gestisce le opzioni di lancio di Uciclient per settare le variabili di configurazione
 //
-// OUTPUT: 1 se opzione non riconosciuta  orichiesta stampa help ==> uscire stampando help
+// OUTPUT: 1 se opzione non riconosciuta  o richiesta stampa help ==> uscire stampando help
 // OUTPUT: 2 ==> richiesta stampa versione ==> uscire
 
 int SetOptions(char argc, char *argv[])
@@ -1865,6 +1921,8 @@ int ind;
 int ValOpz;
 char SearchType[128];		// Tipo ricerca
 int found;
+	
+SetEngineDefaults();
 
 found=0;
 
@@ -1935,6 +1993,12 @@ for (ind=1;ind<argc;ind++)
 			SetOpt(RAWEVAL,ValOpz);
 			found = 1;
                 	}
+        	if (!strncmp(argv[ind],OPZ_USENNUE,strlen(OPZ_USENNUE)))
+                	{
+                	sscanf(argv[ind]+strlen(OPZ_USENNUE),"%d",&ValOpz);
+			SetOpt(USENNUE,ValOpz);
+			found = 1;
+                	}
         	if (!strncmp(argv[ind],OPZ_BOOK,strlen(OPZ_BOOK)))
                 	{
                 	sscanf(argv[ind]+strlen(OPZ_BOOK),"%d",&ValOpz);
@@ -1974,6 +2038,7 @@ void ShowOptions(void)
 	printf(STR_HASH"=%d\n",EngineOptions->Hash);
 	printf(STR_NULLMOVE"=%d\n",EngineOptions->NullMove);
 	printf(STR_RAWEVAL"=%d\n",EngineOptions->RawEval);
+	printf(STR_USENNUE"=%d\n",EngineOptions->UseNNUE);
 	printf(STR_BOOK"=%d\n",EngineOptions->Book);
 
 	printf("\n\n");
