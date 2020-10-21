@@ -50,12 +50,6 @@ void main(char argc,char *argv[]) {
 		return;
 	}
 
-	GenVers(STRVER);
-
-	ShowOptions();
-
-	printf("\n\nType help for hints\n\n");
-		
 #if defined(_MSC_VER) || defined(__MINGW32__)
 	DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
 	DllMain_MyChess(NULL,DLL_PROCESS_ATTACH,NULL);
@@ -64,6 +58,12 @@ void main(char argc,char *argv[]) {
 	DllMain_MyChess(0,DLL_PROCESS_ATTACH,NULL);
 #endif
 
+	GenVers(STRVER);
+
+	ShowOptions();
+
+	printf("\n\nType help for hints\n\n");
+	
 	while (1) {
 	
 		memset(line,0,sizeof(line));			// Azzera il buffer in input;
