@@ -1,5 +1,7 @@
 #include "defs.h"
 
+// include NNUE probe library wrapper header
+#include "nnue_eval.h"
 
 // Penalita' per il punteggio di un pedone isolato
 
@@ -200,6 +202,8 @@ int MaterialDraw(S_BOARD *pos) {
   return FALSE;
 }
 
+// Stockfish NNUE piece encoding
+int nnue_pieces[13] = {0, 6, 5, 4, 3, 2, 1, 12, 11, 10, 9, 8, 7};
 
 //
 // Funzione di valutazione di una posizione
@@ -474,7 +478,7 @@ int EvalPositionW(int RawEval) {
 // INPUT:			RawEval		flag per valutazione grezza
 // OUTPUT:						punteggio in centesimi di pedone
 
-int EvalPosition(int RawEval) {
+int EvalPositionClassic(int RawEval) {
 
 	int score;
 
@@ -484,4 +488,63 @@ int EvalPosition(int RawEval) {
 		score = -score;
 
 	return score;													// Out punteggi
+}
+
+// NNUE
+
+int EvalPosition(int RawEval)
+{
+if (GetOpt(USENNUE)==0)
+	return EvalPositionClassic(RawEval);
+else
+	{
+	// NNUE probe arrays
+	int pieces[33];
+	int squares[33];
+    
+	// NNUE probe arrays index
+	int index = 2;
+    
+	// loop over the pieces
+	for (int piece = 1; piece < 13; piece++)
+		{
+    		// loop over the corresponsding squares
+    		for(int pceNum = 0; pceNum < pos->pceNum[piece]; ++pceNum)
+    			{            
+        		// case white king
+        		if (piece == wK)
+        			{
+            			// init pieces & squares arrays
+            			pieces[0] = nnue_pieces[piece];
+            			squares[0] = SQ64(pos->pList[piece][pceNum]);
+        			}
+            
+        		// case black king
+        		else if (piece == bK)
+        			{
+            			// init pieces & squares arrays
+            			pieces[1] = nnue_pieces[piece];
+            			squares[1] = SQ64(pos->pList[piece][pceNum]);
+        			}
+            
+        		// all the other pieces regardless of order
+        		else
+        			{
+            			// init pieces & squares arrays
+            			pieces[index] = nnue_pieces[piece];
+            			squares[index] = SQ64(pos->pList[piece][pceNum]);
+            
+            			// increment the index
+            			index++;
+        			}
+    			}
+    
+		}    
+    
+    	// end piece and square arrays with zero terminating characters
+    	pieces[index] = 0;
+    	squares[index] = 0;
+    
+    	return evaluate_nnue(pos->side, pieces, squares);
+	}
 }
