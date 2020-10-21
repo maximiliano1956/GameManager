@@ -48,3 +48,13 @@ Now it's also possibile to compile in Linux:
 The script GameManager/UciClient/Compiling.sh creates <br />
 UciClient/UciClient <br />
 
+
+<br />
+Another update: <br />
+Now the default evaluation is NNUE! <br />
+The name of the net must be "net.nnue" <br />
+To switch to the old built-in evaluation use the -UseNNUE=0 line option  <br />
+or use UseNNUE uci option <br />
+<br />
+
+
