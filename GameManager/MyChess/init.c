@@ -328,7 +328,8 @@ void InitConversionTables(void) {
 // Init una volta per tutte di vari dati
 
 void AllInit(void) {
-
+int result;
+	
 	InitConversionTables();					// Init tabelle conversione tra scacchiera reale ed estesa
 	InitBitMask();							// Init tabelle per settare e resettare un bit in una bitboard
 	InitHashKeys();							// Init tabelle per il calcolo dell'hash key di una posizione
