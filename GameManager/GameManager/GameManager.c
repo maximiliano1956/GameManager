@@ -1872,24 +1872,31 @@ int InputWaiting()
 
 void ShowHelp(void)
 {
-	printf("\nCommand line options:\n\n");
+        printf("\nCommand line options:\n\n");
 
-	printf("-v\tprint version and quit\n");
-	printf("-h\tprint this help and quit\n\n");
+        printf("-v\tprint version and quit\n");
+        printf("-h\tprint this help and quit\n\n");
 
-	printf("-SiLog=1\tenable console log (works if a GUI is present)\n");
-	printf("-SiLog=2\tenable file log\n");
-	printf("-SiLog=3\tenable console  (works if a GUI is present) and file log\n\n");
+        printf("-SiLog=1\tenable console log (works if a GUI is present)\n");
+        printf("-SiLog=2\tenable file log\n");
+        printf("-SiLog=3\tenable console  (works if a GUI is present) and file log\n\n");
 
-	printf("-SearchType=AlphaBeta\tset search ALFA-BETA\n");
-	printf("-SearchType=MinMax\tset search MIN-MAX\n");
-	printf("-SearchType=NegaMax\tset search NEGA-MAX\n\n");
+        printf("-SearchType=AlphaBeta\tset search ALFA-BETA\n");
+        printf("-SearchType=MinMax\tset search MIN-MAX\n");
+        printf("-SearchType=NegaMax\tset search NEGA-MAX\n\n");
 
-	printf("-Hash\tenable hash-table\n");
-	printf("-NullMove\tenable null-move\n");
-	printf("-RawEval\tenable raw-eval\n");
-	printf("-Book\tenable book library (named performance.bin)\n\n\n");
+        printf("-Hash=0\t\tdisable hash-table\n");
+        printf("-Hash=1\t\tenable hash-table\n\n");
+        printf("-NullMove=0\tdisable null-move\n");
+        printf("-NullMove=1\tenable null-move\n\n");
+        printf("-RawEval=0\tdisable raw-eval\n");
+        printf("-RawEval=1\tenable raw-eval\n\n");
+        printf("-UseNNUE=0\tdisable nnue-eval\n");
+        printf("-UseNNUE=1\tenable nnue-eval (RawEval doesn't care)\n\n");
+        printf("-Book=0\t\tdisable book library (named performance.bin)\n");
+        printf("-Book=1\t\tenable book library (named performance.bin)\n\n\n");
 }
+
 
 
 //
