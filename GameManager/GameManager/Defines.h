@@ -124,8 +124,9 @@ typedef struct {
 	int Book;						// = TRUE se si puo' utilizzare la libreria delle aperture
 	int SearchType;						// Tipo ricerca (0 = AlphaBeta   1 = MinMax   2 = NegaMax)
 	int RawEval;						// = TRUE valutazione grezza (default = FALSE)
+	int UseNNUE;						// = TRUE valutazione nnue (default = TRUE)
 	int Quiescence;						// Ricerca con quiescenza (default = TRUE)
-	int Hash;							// Gestione hash attiva (default = TRUE)
+	int Hash;						// Gestione hash attiva (default = TRUE)
 	int NullMove;						// Gestione Null Move attiva (default = TRUE)
 
 } S_OPTIONS;
