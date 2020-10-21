@@ -21,6 +21,8 @@
 BOOL WINAPI DllMain_GameManager(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 BOOL WINAPI DllMain_MyTicTacToe(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved);
 
+void SetEngineDefaults(void);
+
 void PrintBoard();
 
 char listMoves[256][32];
@@ -71,6 +73,8 @@ void main(char argc, char argv[]) {
 	time_t t;
 	long msecs;
 	long maxdepth;
+
+	SetEngineDefaults();
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
         DllMain_GameManager(NULL,DLL_PROCESS_ATTACH,NULL);
