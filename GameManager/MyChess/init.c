@@ -1,5 +1,8 @@
 #include "defs.h"
 
+// include NNUE probe library wrapper header
+#include "nnue_eval.h"
+
 //
 // Questa macro serve per generare un intero casuale a 64 bit
 // Viene utilizzata la funzione rand() che genera un intero casuale a 15 bit
@@ -322,7 +325,6 @@ void InitConversionTables(void) {
 
 }
 
-
 // Init una volta per tutte di vari dati
 
 void AllInit(void) {
@@ -334,4 +336,16 @@ void AllInit(void) {
 	InitEvalMasks();						// Init maschere per valutazione strutture dei pedoni
 	InitMvvLva();							// Init matrice punteggi mosse di cattura
 	IniPolyBook();							// Init libreria delle aperture
+	
+        // init Stockfish NNUE
+	if (GetOpt(USENNUE))
+	{
+		DoLog("Loading NNUE: net.nnue");
+        	result=init_nnue("net.nnue");
+		if (result==0)
+			DoLog("NNUE file not found!");
+		else
+			DoLog("NNUE loaded!");
+
+	}
 }
