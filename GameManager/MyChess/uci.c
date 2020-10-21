@@ -176,10 +176,11 @@ void Uci_Loop(void) {
 	printf("option name Hash type spin default 64 min 4 max %d\n",MAX_HASH);								// Dichiara opzione disponibile (nome Hash tipo intero range >= 4 <= 64)
 	printf("option name Book type check default true\n");													// Dichiara opzione disponibile (nome Book tipo booleano default true)
 	printf("option name SearchType type combo default AlphaBeta var AlphaBeta var MinMax var NegaMax\n");	// Dichiara opzione disponibile (nome SearchType tipo stringa default AlphaBeta)
-	printf("option name RawEval type check default false\n");												// Dichiara opzione disponibile (nome RawEval tipo booleano default false)
-	printf("option name Quiescence type check default true\n");												// Dichiara opzione disponibile (nome Quiescence tipo booleano default true)
-	printf("option name HashTable type check default true\n");												// Dichiara opzione disponibile (nome HashTable tipo booleano default true)
-	printf("option name NullMove type check default true\n");												// Dichiara opzione disponibile (nome NullMove tipo booleano default true)
+	printf("option name RawEval type check default false\n");						// Dichiara opzione disponibile (nome RawEval tipo booleano default false)
+	printf("option name Quiescence type check default true\n");						// Dichiara opzione disponibile (nome Quiescence tipo booleano default true)
+	printf("option name HashTable type check default true\n");						// Dichiara opzione disponibile (nome HashTable tipo booleano default true)
+	printf("option name NullMove type check default true\n");						// Dichiara opzione disponibile (nome NullMove tipo booleano default true)
+	printf("option name UseNNUE type check default true\n");						// Dichiara opzione disponibile (nome UseNNUE tipo booleano default true)
 	printf("uciok\n");
 	
 	ParsePosition("position startpos\n");				// Fa' come se avesse invece ricevto il comando "position startpos"
@@ -282,7 +283,25 @@ void Uci_Loop(void) {
 				else
 					printf("Set RawEval to false\n");
 			}
+			
+			if (!strncmp(line,"setoption name UseNNUE value ",29)) {		// Test comando per attivare/disattivare la valutazione NNUE
+			
+				str_true = strstr(line,"true");								// Cerca la sottostringa "true"
 
+				ValOpz = (str_true == NULL) ? FALSE : TRUE;					
+
+				SetOpt(USENNUE,ValOpz);										// Setta in maniera opportuna il tipo di valutazione
+
+				if (ValOpz)
+				{
+					printf("Set UseNNUE to true\n");
+				}
+				else
+				{
+					printf("Set UseNNUE to false\n");
+				}
+			}
+			
 			if (!strncmp(line,"setoption name Quiescence value ",32)) {			// Test comando per attivare/disattivare la ricerca per quiescenza
 			
 				str_true = strstr(line,"true");									// Cerca la sottostringa "true"
