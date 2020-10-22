@@ -55,7 +55,7 @@ Now the default evaluation is NNUE! <br />
 The name of the net must be "net.nnue" <br />
 To switch to the old built-in evaluation use the -UseNNUE=0 line option  <br />
 or use UseNNUE uci option <br />
-WARNING:  THIS VERSION ACTUALLY DOESN'T COMPILE ANYMORE IN WINDOWS!! (Visual Studio)   <br />
+WARNING:  THIS VERSION ACTUALLY DOESN'T COMPILE IN WINDOWS ANYMORE!! (Visual Studio)   <br />
           TO CREATE A WINDOWS VERSION YOU HAVE TO CROSSCOMPILE IN LINUX!   <br />
 <br />
 
