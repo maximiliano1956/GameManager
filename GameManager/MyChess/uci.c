@@ -1,5 +1,24 @@
+#include "Versione.h"
+
 #include "defs.h"
 
+
+
+void WriteUciId(void)
+{
+        printf("id name "NAME"-nnue-"VERSIONE"\n");             // Dichiara nome engine
+
+        printf("id author Lelli Massimo\n");                    // Dichiara autore engine
+        printf("option name Hash type spin default 64 min 4 max %d\n",MAX_HASH);                                                                // Dichiara opzione disponibile (nome Hash tipo intero range >= 4 <= 64)
+        printf("option name Book type check default true\n");                                                                                                   // Dichiara opzione disponibile (nome Book tipo booleano default true)
+        printf("option name SearchType type combo default AlphaBeta var AlphaBeta var MinMax var NegaMax\n");   // Dichiara opzione disponibile (nome SearchType tipo stringa default AlphaBeta)
+        printf("option name RawEval type check default false\n");                                               // Dichiara opzione disponibile (nome RawEval tipo booleano default false)
+        printf("option name Quiescence type check default true\n");                                             // Dichiara opzione disponibile (nome Quiescence tipo booleano default true)
+        printf("option name HashTable type check default true\n");                                              // Dichiara opzione disponibile (nome HashTable tipo booleano default true)
+        printf("option name NullMove type check default true\n");                                               // Dichiara opzione disponibile (nome NullMove tipo booleano default true)
+        printf("option name UseNNUE type check default true\n");                                                // Dichiara opzione disponibile (nome UseNNUE tipo booleano default true)
+        printf("uciok\n");
+}
 
 //
 // Questa funzione viene chiamata quando la GUI invia il comando "position"
@@ -171,17 +190,7 @@ void Uci_Loop(void) {
 	setvbuf(stdin,NULL,_IONBF,0);				// Disattiva il buffering per lo standard input
 	setvbuf(stdout,NULL,_IONBF,0);				// Disattiva il buffering per lo standard output
 
-	printf("id name "NAME"\n");				// Dichiara nome engine
-	printf("id author Lelli Massimo\n");		// Dichiara autore engine
-	printf("option name Hash type spin default 64 min 4 max %d\n",MAX_HASH);								// Dichiara opzione disponibile (nome Hash tipo intero range >= 4 <= 64)
-	printf("option name Book type check default true\n");													// Dichiara opzione disponibile (nome Book tipo booleano default true)
-	printf("option name SearchType type combo default AlphaBeta var AlphaBeta var MinMax var NegaMax\n");	// Dichiara opzione disponibile (nome SearchType tipo stringa default AlphaBeta)
-	printf("option name RawEval type check default false\n");						// Dichiara opzione disponibile (nome RawEval tipo booleano default false)
-	printf("option name Quiescence type check default true\n");						// Dichiara opzione disponibile (nome Quiescence tipo booleano default true)
-	printf("option name HashTable type check default true\n");						// Dichiara opzione disponibile (nome HashTable tipo booleano default true)
-	printf("option name NullMove type check default true\n");						// Dichiara opzione disponibile (nome NullMove tipo booleano default true)
-	printf("option name UseNNUE type check default true\n");						// Dichiara opzione disponibile (nome UseNNUE tipo booleano default true)
-	printf("uciok\n");
+	WriteUciId();                                           // Stampa Uci options
 	
 	ParsePosition("position startpos\n");				// Fa' come se avesse invece ricevto il comando "position startpos"
 
@@ -218,12 +227,8 @@ void Uci_Loop(void) {
 			if (!strncmp(line,"quit",4))			// Se comando "quit"
 				Quit = TRUE;						// Prenota l'uscita dal programma
 
-			if (!strncmp(line,"uci",3)) {			// Se comando "uci" (richiesta identificazione)
-			
-				printf("id name "NAME"\n");			// Si identifica...
-				printf("id author Lelli Massimo\n");
-				printf("uciok\n");					
-			}
+			if (!strncmp(line,"uci",3))			// Se comando "uci" (richiesta identificazione)
+				WriteUciId();                           // Stampa Uci options
 
 			if (!strncmp(line,"setoption name Hash value ",26)) {		// Test comando "set option name Hash value " di lunghezza 26 caratteri)
 #if defined(_MSC_VER) || defined(__MINGW32__)
