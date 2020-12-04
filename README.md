@@ -60,3 +60,7 @@ WARNING:  THIS VERSION ACTUALLY DOESN'T COMPILE IN WINDOWS ANYMORE!! (Visual Stu
 <br />
 
 
+Good news!  <br />
+Connect4, an old classic game, has been added!   <br />
+<br />
+
