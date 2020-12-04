@@ -8,3 +8,6 @@ i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -D
 cd ../MyTicTacToe
 rm -f MyTicTacToe.dll
 i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -DGAME_EXPORTS *.c ../GameManager/GameManager.dll -o MyTicTacToe.dll
+cd ../MyConnect4
+rm -f MyConnect4.dll
+i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -DGAME_EXPORTS *.c ../GameManager/GameManager.dll -o MyConnect4.dll
