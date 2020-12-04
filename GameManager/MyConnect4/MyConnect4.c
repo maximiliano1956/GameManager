@@ -665,6 +665,7 @@ int FindDiagRightChks(int sd,int n)
 							}
 						}
 					}
+					count=0;
 				}
 			}
 			else
@@ -704,6 +705,7 @@ int FindDiagRightChks(int sd,int n)
 							}
 						}
 					}
+					count=0;
 				}
 			}
 			else
@@ -765,6 +767,7 @@ int FindDiagLeftChks(int sd,int n)
 							}
 						}
 					}
+					count=0;
 				}
 			}
 			else
@@ -804,6 +807,7 @@ int FindDiagLeftChks(int sd,int n)
 							}
 						}
 					}
+					count=0;
 				}
 			}
 			else
