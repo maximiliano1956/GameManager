@@ -1,0 +1,213 @@
+; *** Connect4
+; *** Copyright 1998-2000 Zillions Development
+; v.1.2
+
+; You need to purchase Zillions of Games to load this rules file
+; Visit the Zillions web site at http://www.zillions-of-games.com
+
+(define common-grid-stuff
+    (start-rectangle 1 1 30 30) ; top-left position
+    (directions (n 0 -1) (e 1 0) (ne 1 -1) (nw -1 -1) (s 0 1))
+)
+
+(game
+    (title "Connect4 6x5")
+    (description "Object: Be the first player to get 4 of your pieces in a row,
+          horizontally, vertically, or diagonally.  Moves are made by dropping pieces
+          to the lowest unoccupied space in a column.")
+    (history "Also known as Gravitational TicTacToe and 4-in-a-row, this game has been
+        marketed in a 7x6 version under the name Connect-4.")
+    (strategy "Try to position your checkers to get as many `potential` 4-in-a-rows
+        as possible, and use these threats to prevent your opponent from dropping
+        into as as many columns as you can.    The best opening move for Red on
+        boards with odd numbers of columns is to drop into the central column.\\
+        Victor Allis, a Dutch computer scientist, proved in the late 1980's that Red
+        has a forced win on the 7x6 board.")
+    (engine "GameManager.dll")
+    (drop-sound "Audio\\SlideDown.wav")
+    (win-sound "Audio\\Congrats.wav")
+    (loss-sound "Audio\\YouLose.wav")
+    (players Red Black)
+    (turn-order Red Black)
+	(allow-flipping false)
+    (pass-turn false)
+    (board
+        (image "Images\MyConnect4\VerticalTTT6x5.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f" (30 0)) ; columns
+                ("5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+    	(name checker)
+    	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+    (board-setup
+        (Red (checker off 99))
+        (Black (checker off 99))
+	)
+)
+
+(variant
+    (title "Connect4 6x6")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT6x6.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f" (30 0)) ; columns
+                ("6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+)
+
+(variant (title "-")) ; -----------------------------------------------
+
+(variant
+    (title "Connect4 7x5")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT7x5.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions ; 7x6
+                ("a/b/c/d/e/f/g" (30 0)) ; columns
+                ("5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+	(piece
+    		(name checker)
+   		(image Red "Images\MyConnect4\red.bmp"
+                       Black "Images\MyConnect4\black.bmp")
+		(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant
+    (title "Connect4 7x6")
+	(default)
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT7x6.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions ; 7x6
+                ("a/b/c/d/e/f/g" (30 0)) ; columns
+                ("6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant
+    (title "Connect4 7x7")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT7x7.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions ; 7x6
+                ("a/b/c/d/e/f/g" (30 0)) ; columns
+                ("7/6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant (title "-")) ; -----------------------------------------------
+
+(variant
+    (title "Connect4 8x5")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT8x5.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f/g/h" (30 0)) ; columns
+                ("5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant
+    (title "Connect4 8x6")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT8x6.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f/g/h" (30 0)) ; columns
+                ("6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant
+    (title "Connect4 8x7")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT8x7.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f/g/h" (30 0)) ; columns
+                ("7/6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
+
+(variant
+    (title "Connect4 8x8")
+    (board
+        (image "Images\Vertical_TicTacToe\VerticalTTT8x8.bmp")
+        (grid
+            (common-grid-stuff)
+            (dimensions
+                ("a/b/c/d/e/f/g/h" (30 0)) ; columns
+                ("8/7/6/5/4/3/2/1" (0 30)) ; rows
+			)
+		)
+	)
+    (piece
+   	(name checker)
+   	(image Red "Images\MyConnect4\red.bmp"
+               Black "Images\MyConnect4\black.bmp")
+	(help "Checker: drops to bottom of any column")
+	)
+)
