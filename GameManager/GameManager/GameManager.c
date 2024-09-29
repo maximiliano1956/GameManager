@@ -124,7 +124,6 @@ int flag_piece[MAXVARS];
 jmp_buf			mark;
 int				BeginTime;
 long			SearchTime;
-long			lDepth;
 LPSTR			CurrMove;
 Search_Status	*Search;
 LPSTR			Move;
