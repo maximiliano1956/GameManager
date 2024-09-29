@@ -8,5 +8,4 @@ i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -D
 cd ../TestMyConnect4
 rm -f TestMyConnect4Dll.exe
 i686-w64-mingw32-gcc -I../GameManager -mconsole TestMyConnect4Dll.c -lpthread -static -o TestMyConnect4Dll.exe
-strip TestMyConnect4Dll.exe
 
