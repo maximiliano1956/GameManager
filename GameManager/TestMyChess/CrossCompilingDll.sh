@@ -8,4 +8,3 @@ i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -D
 cd ../TestMyChess
 rm -f TestMyChessDll.exe
 i686-w64-mingw32-gcc -I../GameManager -mconsole TestMyChessDll.c -lpthread -static -o TestMyChessDll.exe
-strip TestMyChessDll.exe
