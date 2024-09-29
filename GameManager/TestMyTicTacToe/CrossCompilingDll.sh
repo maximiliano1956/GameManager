@@ -8,5 +8,4 @@ i686-w64-mingw32-gcc -I../GameManager -shared -municode -DGAMEMANAGER_IMPORTS -D
 cd ../TestMyTicTacToe
 rm -f TestMyTicTacToeDll.exe
 i686-w64-mingw32-gcc -I../GameManager -mconsole TestMyTicTacToeDll.c -lpthread -static -o TestMyTicTacToeDll.exe
-strip TestMyTicTacToeDll.exe
 
